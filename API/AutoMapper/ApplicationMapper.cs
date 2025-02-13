@@ -1,4 +1,6 @@
 ﻿
+using API.Models.DTOs.UserDto;
+using API.Models.Entity;
 using AutoMapper;
 
 
@@ -14,7 +16,7 @@ namespace API.AutoMapper
             //CreateMap<CreateHouseDTO, HouseEntity>().ReverseMap();
 
 
-            //CreateMap<AppUser, UserDto>().ReverseMap();
+            CreateMap<AppUser, UserDto>().ReverseMap();
         }
     }
 }

@@ -16,8 +16,9 @@ namespace API.Data
             base.OnModelCreating(modelBuilder);
         }
         //Add models here
-      
-        //public DbSet<HouseEntity> Houses { get;set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
+
 
     }
 }
