@@ -109,7 +109,8 @@ namespace API.Repository
             {
                 //this will run only for first time the roles are created
                 await _roleManager.CreateAsync(new IdentityRole("admin"));
-                await _roleManager.CreateAsync(new IdentityRole("register"));
+                await _roleManager.CreateAsync(new IdentityRole("alumno"));
+                await _roleManager.CreateAsync(new IdentityRole("profesor"));
             }
             await _userManager.AddToRoleAsync(user, "admin");
             AppUser? newUser = _context.AppUsers.FirstOrDefault(u => u.UserName == userRegistrationDto.UserName);
