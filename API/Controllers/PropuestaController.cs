@@ -2,7 +2,6 @@
 using API.Models.Entity;
 using API.Repository;
 using API.Repository.IRepository;
-using APInatorLite.Controllers;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 

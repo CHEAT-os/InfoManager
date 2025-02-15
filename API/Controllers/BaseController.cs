@@ -1,11 +1,12 @@
-﻿using API.Repository.IRepository;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using API.Repository.IRepository;
 
 
-namespace APInatorLite.Controllers
-{  
+
+namespace API.Controllers
+{
     [ApiController]
     [Route("api/[controller]")]
     public abstract class BaseController<TEntity, TDto, TCreateDto> : ControllerBase
@@ -39,7 +40,25 @@ namespace APInatorLite.Controllers
             }
         }
 
-      
+        [Authorize(Roles = "admin")]
+        [HttpGet("{id:int}", Name = "[controller]_GetEntity")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get(int id)
+        {
+            try
+            {
+                var entity = await _repository.GetAsync(id);
+                if (entity == null) return NotFound();
+
+                return Ok(_mapper.Map<TDto>(entity));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching data");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
         [Authorize(Roles = "admin")]
         [HttpPost]
@@ -85,6 +104,27 @@ namespace APInatorLite.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating data");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var entity = await _repository.GetAsync(id);
+                if (entity == null) return NotFound();
+
+                await _repository.DeleteAsync(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting data");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
