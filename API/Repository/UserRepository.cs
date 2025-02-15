@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Security.Cryptography;
 using API.Models.Entity;
+using System.Diagnostics.Metrics;
 
 namespace API.Repository
 {
@@ -112,7 +113,21 @@ namespace API.Repository
                 await _roleManager.CreateAsync(new IdentityRole("alumno"));
                 await _roleManager.CreateAsync(new IdentityRole("profesor"));
             }
-            await _userManager.AddToRoleAsync(user, "admin");
+            switch (userRegistrationDto.Rol)
+            {
+                case "admin":
+                    await _userManager.AddToRoleAsync(user, "admin");
+                    break;
+
+                case "profesor":
+                    await _userManager.AddToRoleAsync(user, "profesor");
+                    break;
+
+                default:
+                    await _userManager.AddToRoleAsync(user, "alumno");
+                    break;
+            }
+           
             AppUser? newUser = _context.AppUsers.FirstOrDefault(u => u.UserName == userRegistrationDto.UserName);
 
             return new UserLoginResponseDto
