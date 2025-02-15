@@ -1,4 +1,5 @@
-﻿using API.Models.Entity;
+﻿using API.Models.DTOs.Propuesta;
+using API.Models.Entity;
 
 namespace API.Repository.IRepository
 {

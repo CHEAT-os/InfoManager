@@ -13,11 +13,13 @@ namespace API.AutoMapper
         {
             
 
+            //CreateMap<HouseEntity, HouseDTO>().ReverseMap();
+            //CreateMap<CreateHouseDTO, HouseEntity>().ReverseMap();
+
 
             CreateMap<AppUser, UserDto>().ReverseMap();
             CreateMap<PropuestaEntity, PropuestaDTO>().ReverseMap();
-            CreateMap<PropuestaDTO, CreatePropuestaDTO>().ReverseMap();
-
+            CreateMap<CreatePropuestaDTO, PropuestaEntity>().ReverseMap();
         }
     }
 }

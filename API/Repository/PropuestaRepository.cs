@@ -70,6 +70,7 @@ namespace API.Repository
 
         public async Task<bool> UpdateAsync(PropuestaEntity propuesta)
         {
+
             _context.Update(propuesta);
             return await Save();
         }

@@ -1,5 +1,6 @@
 ﻿using API.Attributes;
 using API.Attributes;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.Models.DTOs.UserDto
