@@ -13,6 +13,12 @@ namespace API.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<User>().HasIndex(p => new
+            //{
+            //    p.UserName,
+            //    p.Dni
+            //})
+            // .IsUnique();
             base.OnModelCreating(modelBuilder);
         }
         //Add models here
