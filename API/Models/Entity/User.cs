@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Models.Entity
 {
+    [Index(nameof(UserName), nameof(Dni), IsUnique = true)]
     public class User
     {
         [Key]
