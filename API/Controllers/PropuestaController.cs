@@ -28,7 +28,7 @@ namespace API.Controllers
 
         [Authorize(Roles = "alumno")]
         [Authorize(Roles = "profesor")]
-        [HttpPost]
+        [HttpPost("proponer")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
