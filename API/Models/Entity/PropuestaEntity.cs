@@ -1,0 +1,20 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace API.Models.Entity
+{
+    public class PropuestaEntity
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        [Required]
+        [ForeignKey("UserId")]
+        public int UserId { get; set; }
+        public string Titulo { get; set; }
+        public string Descripcion { get; set; }
+        public string Tipo { get; set; }
+        public string Estado { get; set; }
+        public User user { get; set; }
+    }
+}
