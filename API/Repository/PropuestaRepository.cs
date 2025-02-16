@@ -1,11 +1,12 @@
 ﻿using API.Data;
 using API.Models.Entity;
+using API.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace API.Repository
 {
-    public class PropuestaRepository
+    public class PropuestaRepository : IPropuestaRepository
     {
         private readonly ApplicationDbContext _context;
         private readonly IMemoryCache _cache;
