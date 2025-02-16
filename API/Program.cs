@@ -7,6 +7,8 @@ using System.Text;
 using API.AutoMapper;
 using API.Data;
 using API.Models.Entity;
+using API.Repository.IRepository;
+using API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 // Add services to the container.
+builder.Services.AddScoped<IPropuestaRepository, PropuestaRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddAutoMapper(typeof(ApplicationMapper));
 
 //builder.Services.AddScoped<IHouseRepository, HouseRepository>();
 builder.Services.AddAutoMapper(typeof(ApplicationMapper));

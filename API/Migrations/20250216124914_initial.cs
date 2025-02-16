@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class propuesta : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,6 +49,22 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Propuesta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Propuesta", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -177,26 +193,39 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Propuesta",
+                name: "PropuestaUser",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PropuestaId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PropuestaEntityId = table.Column<int>(type: "int", nullable: true),
+                    UserId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Propuesta", x => x.Id);
+                    table.PrimaryKey("PK_PropuestaUser", x => new { x.PropuestaId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_Propuesta_Users_UserId",
+                        name: "FK_PropuestaUser_Propuesta_PropuestaEntityId",
+                        column: x => x.PropuestaEntityId,
+                        principalTable: "Propuesta",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PropuestaUser_Propuesta_PropuestaId",
+                        column: x => x.PropuestaId,
+                        principalTable: "Propuesta",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PropuestaUser_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PropuestaUser_Users_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -239,9 +268,19 @@ namespace API.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Propuesta_UserId",
-                table: "Propuesta",
+                name: "IX_PropuestaUser_PropuestaEntityId",
+                table: "PropuestaUser",
+                column: "PropuestaEntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropuestaUser_UserId",
+                table: "PropuestaUser",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropuestaUser_UserId1",
+                table: "PropuestaUser",
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_UserName_Dni",
@@ -269,13 +308,16 @@ namespace API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Propuesta");
+                name: "PropuestaUser");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Propuesta");
 
             migrationBuilder.DropTable(
                 name: "Users");

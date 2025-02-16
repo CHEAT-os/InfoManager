@@ -116,14 +116,34 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("Id");
+
+                    b.ToTable("Propuesta");
+                });
+
+            modelBuilder.Entity("API.Models.Entity.PropuestaUserEntity", b =>
+                {
+                    b.Property<int>("PropuestaId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("PropuestaEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("PropuestaId", "UserId");
+
+                    b.HasIndex("PropuestaEntityId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Propuesta");
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("PropuestaUser");
                 });
 
             modelBuilder.Entity("API.Models.Entity.User", b =>
@@ -303,15 +323,31 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("API.Models.Entity.PropuestaEntity", b =>
+            modelBuilder.Entity("API.Models.Entity.PropuestaUserEntity", b =>
                 {
-                    b.HasOne("API.Models.Entity.User", "user")
+                    b.HasOne("API.Models.Entity.PropuestaEntity", null)
+                        .WithMany("PropuestaUser")
+                        .HasForeignKey("PropuestaEntityId");
+
+                    b.HasOne("API.Models.Entity.PropuestaEntity", "Propuesta")
+                        .WithMany()
+                        .HasForeignKey("PropuestaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Entity.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("user");
+                    b.HasOne("API.Models.Entity.User", null)
+                        .WithMany("PropuestaUser")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Propuesta");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -363,6 +399,16 @@ namespace API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Models.Entity.PropuestaEntity", b =>
+                {
+                    b.Navigation("PropuestaUser");
+                });
+
+            modelBuilder.Entity("API.Models.Entity.User", b =>
+                {
+                    b.Navigation("PropuestaUser");
                 });
 #pragma warning restore 612, 618
         }
