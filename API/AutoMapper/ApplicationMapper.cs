@@ -11,10 +11,6 @@ namespace API.AutoMapper
     {
         public ApplicationMapper()
         {
-            
-
-            //CreateMap<HouseEntity, HouseDTO>().ReverseMap();
-            //CreateMap<CreateHouseDTO, HouseEntity>().ReverseMap();
 
 
             CreateMap<AppUser, UserDto>().ReverseMap();
