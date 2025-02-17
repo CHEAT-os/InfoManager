@@ -15,7 +15,6 @@ namespace API.Models.Entity
         public string Email { get; set; }
         public string Password { get; set; }
         public string Rol { get; set; }
-        public List<PropuestaEntity> Propuestas { get; } = [];
-        
+        public ICollection<PropuestaEntity> Propuestas { get; } = [];
     }
 }

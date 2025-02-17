@@ -16,13 +16,17 @@ namespace API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+            modelBuilder.Entity<PropuestaEntity>()
+                .HasMany(e => e.Users)
+                .WithMany(e => e.Propuestas);
+
         }
 
         //Add models here
         public DbSet<User> Users { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<PropuestaEntity> Propuesta { get; set; }
-       
+        public DbSet<CursoEntity> Curso { get; set; }
+
     }
 }
