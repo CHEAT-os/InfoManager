@@ -39,17 +39,17 @@ namespace API.Repository
 
         public ICollection<AppUser> GetUsers()
         {
-            return _context.AppUsers.OrderBy(user => user.UserName).ToList();
+            return _context.AppUsers.OrderBy(user => user.Email).ToList();
         }
 
-        public bool IsUniqueUser(string userName)
+        public bool IsUniqueUser(string email)
         {
-            return !_context.AppUsers.Any(user => user.UserName == userName);
+            return !_context.AppUsers.Any(user => user.Email == email);
         }
 
         public async Task<UserLoginResponseDto> Login(UserLoginDto userLoginDto)
         {
-            var user = _context.AppUsers.FirstOrDefault(u => u.UserName.ToLower() == userLoginDto.UserName.ToLower());
+            var user = _context.AppUsers.FirstOrDefault(u => u.Email.ToLower() == userLoginDto.Email.ToLower());
             bool isValid = await _userManager.CheckPasswordAsync(user, userLoginDto.Password);
 
             //user doesn't exist ?
@@ -73,7 +73,7 @@ namespace API.Repository
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.UserName.ToString()),
+                    new Claim(ClaimTypes.Name, user.Email.ToString()),
                     new Claim(ClaimTypes.Role, roles.FirstOrDefault())
 
                 }),
@@ -95,10 +95,10 @@ namespace API.Repository
         {
             AppUser user = new AppUser()
             {
-                UserName = userRegistrationDto.UserName,
+                UserName = userRegistrationDto.Email,
                 Name = userRegistrationDto.Name,
-                Email = userRegistrationDto.UserName,
-                NormalizedEmail = userRegistrationDto.UserName.ToUpper(),
+                Email = userRegistrationDto.Email,
+                NormalizedEmail = userRegistrationDto.Email.ToUpper(),
             };
 
             var result = await _userManager.CreateAsync(user, userRegistrationDto.Password);
@@ -128,7 +128,7 @@ namespace API.Repository
                     break;
             }
            
-            AppUser? newUser = _context.AppUsers.FirstOrDefault(u => u.UserName == userRegistrationDto.UserName);
+            AppUser? newUser = _context.AppUsers.FirstOrDefault(u => u.Email == userRegistrationDto.Email);
 
             return new UserLoginResponseDto
             {

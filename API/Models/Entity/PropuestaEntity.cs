@@ -13,6 +13,5 @@ namespace API.Models.Entity
         public string Tipo { get; set; }
         public string Estado { get; set; }
         public List<User> Users { get; } = [];
-        public List<PropuestaUserEntity> PropuestaUser { get; } = [];
     }
 }

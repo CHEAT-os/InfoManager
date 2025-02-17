@@ -13,17 +13,13 @@ namespace API.Models.DTOs.UserDto
         [Required(ErrorMessage = "Field required: Apellidos")]
         public string Apellidos { get; set; }
 
-        [Required(ErrorMessage = "Field required: UserName")]
-        public string UserName { get; set; }
-
-        [Required(ErrorMessage = "Field required: Dni")]
-        public string Dni { get; set; }
-
         [Required(ErrorMessage = "Field required: Email")]
         public string Email { get; set; }
+
         [Required(ErrorMessage = "Field required: Password")]
         [PasswordValidation]
         public string Password { get; set; }
+        
         [Required(ErrorMessage = "Field required: Rol")]
         public string Rol { get; set; }
 
