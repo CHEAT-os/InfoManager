@@ -1,5 +1,3 @@
-//Modelo user prueba
-
 import { PropuestaModel } from "./propuestaModel";
 
 export interface userModel{

@@ -14,10 +14,10 @@
 </section>
 
 <h2>Registro de Proyecto</h2>
-<form [formGroup]="applyForm" (ngSubmit)="submitApplication()">
-  <label for="nombre">Nombre y apellidos del Alumno:</label>
-  <input type="text" id="nombre" name="nombre" placeholder="Apellidos, Nombre" formControlName="NombreAlumno" required>
-  <div *ngIf="hasError('NombreAlumno')" style="color: red;">El nombre es obligatorio y debe tener al menos 5 caracteres.</div>
+<form [formGroup]="applyForm" (ngSubmit)="submitApplication()"> <!--Formulario --> 
+  <label for="nombre">Nombre y apellidos del Alumno:</label> 
+  <input type="text" id="nombre" name="nombre" placeholder="Apellidos, Nombre" formControlName="NombreAlumno" required> <!--formControlName para recoger desde el ts -->
+  <div *ngIf="hasError('NombreAlumno')" style="color: red;">El nombre es obligatorio y debe tener al menos 5 caracteres.</div> <!--Mensaje de error -->
   <br><br>
 
   <label for="titulo">Nombre del proyecto:</label>
@@ -25,7 +25,7 @@
   <div *ngIf="hasError('NombreProyecto')" style="color: red;">El título del proyecto es obligatorio y debe tener al menos 5 caracteres.</div>
   <br><br>
 
-  <label>Opciones:</label>
+  <label>Opciones:</label> 
   <div class="radio-group">
     <input type="radio" id="Documental" formControlName="tipoProyecto" value="Documental">
     <label for="Documental">Documental</label>
@@ -41,12 +41,13 @@
 
   <label for="descripcion">Descripción del proyecto:</label><br>
   <textarea id="descripcion" name="descripcion" placeholder="Tu respuesta" formControlName="descripcion" required></textarea>
-  <div *ngIf="hasError('descripcion')" style="color: red;">La descripción es obligatoria y debe tener al menos 10 caracteres.</div>
+  <div *ngIf="hasError('descripcion')" style="color: red;">La descripción es obligatoria y debe tener al menos 25 caracteres.</div>
   <br><br>
 
   <button type="submit" [disabled]="applyForm.invalid">Enviar</button>
 </form>
 
+<!--Mensaje de exito o error-->
 <div *ngIf="successMessage" style="color: green;">
   <p>{{ successMessage }}</p>
 </div>

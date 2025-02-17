@@ -34,7 +34,7 @@ export class FormularioComponent {
     }
 
     const propuestaData: PropuestaModel = {
-      email: "",  // email, se coge del logueo 
+      email: "",  // email, se pillara usuario logueado
       titulo: this.applyForm.value.NombreProyecto ?? '',
       descripcion: this.applyForm.value.descripcion?? '',
       tipo: this.applyForm.value.tipoProyecto ?? '',

@@ -1,5 +1,3 @@
-// modelo de prueba
-
 export interface PropuestaModel {
     email: string;
     titulo: string;
