@@ -16,11 +16,15 @@
 <h2>Registro de Proyecto</h2>
 <form [formGroup]="applyForm" (ngSubmit)="submitApplication()">
   <label for="nombre">Nombre y apellidos del Alumno:</label>
-  <input type="text" id="nombre" name="nombre" placeholder="Apellidos, Nombre" formControlName="NombreAlumno" required><br><br>
-  
+  <input type="text" id="nombre" name="nombre" placeholder="Apellidos, Nombre" formControlName="NombreAlumno" required>
+  <div *ngIf="hasError('NombreAlumno')" style="color: red;">El nombre es obligatorio y debe tener al menos 5 caracteres.</div>
+  <br><br>
+
   <label for="titulo">Nombre del proyecto:</label>
-  <input type="text" id="titulo" name="titulo" placeholder="Tu respuesta" formControlName="NombreProyecto" required><br><br>
-  
+  <input type="text" id="titulo" name="titulo" placeholder="Tu respuesta" formControlName="NombreProyecto" required>
+  <div *ngIf="hasError('NombreProyecto')" style="color: red;">El título del proyecto es obligatorio y debe tener al menos 5 caracteres.</div>
+  <br><br>
+
   <label>Opciones:</label>
   <div class="radio-group">
     <input type="radio" id="Documental" formControlName="tipoProyecto" value="Documental">
@@ -32,14 +36,17 @@
     <input type="radio" id="Gestion" formControlName="tipoProyecto" value="Gestion">
     <label for="Gestion">Gestión</label>
   </div>
-  
+  <div *ngIf="hasError('tipoProyecto')" style="color: red;">Debes seleccionar un tipo de proyecto.</div>
+  <br>
+
   <label for="descripcion">Descripción del proyecto:</label><br>
-  <textarea id="descripcion" name="descripcion" placeholder="Tu respuesta" formControlName="descripcion" required></textarea><br><br>
-  
+  <textarea id="descripcion" name="descripcion" placeholder="Tu respuesta" formControlName="descripcion" required></textarea>
+  <div *ngIf="hasError('descripcion')" style="color: red;">La descripción es obligatoria y debe tener al menos 10 caracteres.</div>
+  <br><br>
+
   <button type="submit" [disabled]="applyForm.invalid">Enviar</button>
 </form>
 
-<!-- Mensajes de éxito y error -->
 <div *ngIf="successMessage" style="color: green;">
   <p>{{ successMessage }}</p>
 </div>
