@@ -4,6 +4,8 @@ namespace API.Models.DTOs.Propuesta
 {
     public class CreatePropuestaDTO
     {
+        [Required(ErrorMessage = "Field required: Email")]
+        public string Email { get; set; }
         [Required(ErrorMessage = "Field required: Titulo")]
         public string Titulo { get; set; }
         [Required(ErrorMessage = "Field required: Descripcion")]
