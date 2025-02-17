@@ -19,6 +19,10 @@ namespace API.Data
             modelBuilder.Entity<PropuestaEntity>()
                 .HasMany(e => e.Users)
                 .WithMany(e => e.Propuestas);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Cursos)
+                .WithMany(e => e.Users);
         }
 
         //Add models here
