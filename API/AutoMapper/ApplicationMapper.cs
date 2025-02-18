@@ -1,4 +1,5 @@
 ﻿
+using API.Models.DTOs.Curso;
 using API.Models.DTOs.Propuesta;
 using API.Models.DTOs.UserDto;
 using API.Models.Entity;
@@ -16,6 +17,8 @@ namespace API.AutoMapper
             CreateMap<AppUser, UserDto>().ReverseMap();
             CreateMap<PropuestaEntity, PropuestaDTO>().ReverseMap();
             CreateMap<CreatePropuestaDTO, PropuestaEntity>().ReverseMap();
+            CreateMap<CursoEntity, CursoDTO>().ReverseMap();
+            CreateMap<CreateCursoDTO, CursoEntity>().ReverseMap();
         }
     }
 }

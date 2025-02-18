@@ -53,11 +53,11 @@ namespace API.Controllers
                 return BadRequest(new { error = "Incorrect Input", message = ModelState });
             }
 
-            if (!_userRepository.IsUniqueUser(userRegistrationDto.UserName))
+            if (!_userRepository.IsUniqueUser(userRegistrationDto.Email))
             {
                 _reponseApi.StatusCode = HttpStatusCode.BadRequest;
                 _reponseApi.IsSuccess = false;
-                _reponseApi.ErrorMessages.Add("Username already exists");
+                _reponseApi.ErrorMessages.Add("Email already exists");
                 return BadRequest();
             }
 
