@@ -35,14 +35,8 @@
     <Grid>
 
         <Menu VerticalAlignment="Top" Background="#3498db" Foreground="White">
-            <MenuItem Header="Inicio"  Command="{Binding SelectViewModelCommand}"
-                CommandParameter="{Binding DataContext.InicioViewModel, Source={RelativeSource AncestorType=UserControl}}"/>
             <MenuItem Header="Propuestas" Command="{Binding DataContext.SelectViewModelCommand, RelativeSource={RelativeSource AncestorType=Window}}"
           CommandParameter="{Binding DataContext.PropuestaViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
-            <MenuItem Header="Evaluaciones"  Command="{Binding SelectViewModelCommand}"
-                CommandParameter="{Binding DataContext.EvaluacionesViewModel, Source={RelativeSource AncestorType=UserControl}}" />
-            <MenuItem Header="Cerrar sesión"  Command="{Binding SelectViewModelCommand}"
-                CommandParameter="{Binding DataContext.CerrarSecionViewModel, Source={RelativeSource AncestorType=UserControl}}" />
         </Menu>
         <Grid x:Name="MainContent" VerticalAlignment="Center" HorizontalAlignment="Center">
    
