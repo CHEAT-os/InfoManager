@@ -8,20 +8,22 @@ namespace WPF_CHEAT_os.ViewModel
         private ViewModelBase? _selectedViewModel;
      
         public MainViewModel(PrincipalViewModel principal, PropuestaViewModel propuesta, 
-            VerPropuestaViewModel verPropuesta, LoginViewModel login)
+            VerPropuestaViewModel verPropuesta, LoginViewModel login, RegistroViewModel registro)
         {
-            _selectedViewModel = principal;
+            _selectedViewModel = login;
 
             PrincipalViewModel = principal;
             PropuestaViewModel = propuesta;
             VerPropuestaViewModel = verPropuesta;
-            LoginViewModel loginViewModel = login;
+            LoginViewModel = login;
+            RegistroViewModel = registro;
         }
 
         public LoginViewModel LoginViewModel { get; set; }
         public PropuestaViewModel PropuestaViewModel { get; set; }
         public PrincipalViewModel PrincipalViewModel { get; set; }
         public VerPropuestaViewModel VerPropuestaViewModel { get; set; }
+        public RegistroViewModel RegistroViewModel { get; set; }
 
         public ViewModelBase? SelectedViewModel
         {
@@ -40,7 +42,7 @@ namespace WPF_CHEAT_os.ViewModel
             }
         }
 
-        private bool _isMenuVisible = true;
+        private bool _isMenuVisible = false;
 
         public bool IsMenuVisible
         {
