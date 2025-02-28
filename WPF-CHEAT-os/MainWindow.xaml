@@ -18,7 +18,13 @@
         <DataTemplate DataType="{x:Type viewmodel:PropuestaViewModel}">
             <view:PropuestaView/>
         </DataTemplate>
-        
+        <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
+            <view:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:RegistroViewModel}">
+            <view:RegistroView/>
+        </DataTemplate>
+
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
         
     </Window.Resources>
