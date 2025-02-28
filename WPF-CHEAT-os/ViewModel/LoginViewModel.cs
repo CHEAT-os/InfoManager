@@ -58,9 +58,9 @@ namespace WPF_CHEAT_os.ViewModel
         private void Registro()
         {
             var mainViewModel = App.Current.Services.GetService<MainViewModel>();
-            //var RegistroViewModel = App.Current.Services.GetService<RegistroViewModel>();
+            var RegistroViewModel = App.Current.Services.GetService<RegistroViewModel>();
 
-            //mainViewModel.SelectViewModelCommand.Execute(RegistroViewModel);
+            mainViewModel.SelectViewModelCommand.Execute(RegistroViewModel);
         }
 
         public override Task LoadAsync()
