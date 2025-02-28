@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250217225941_prueba")]
-    partial class prueba
+    [Migration("20250228183746_asignaturas")]
+    partial class asignaturas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,6 +95,49 @@ namespace API.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("API.Models.Entity.AsignaturaEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CursoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CursoId");
+
+                    b.ToTable("Asignatura");
+                });
+
+            modelBuilder.Entity("API.Models.Entity.CursoEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Turno")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Curso");
+                });
+
             modelBuilder.Entity("API.Models.Entity.PropuestaEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -158,6 +201,36 @@ namespace API.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("AsignaturaEntityUser", b =>
+                {
+                    b.Property<int>("AsignaturasId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AsignaturasId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("AsignaturaEntityUser");
+                });
+
+            modelBuilder.Entity("CursoEntityUser", b =>
+                {
+                    b.Property<int>("CursosId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CursosId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("CursoEntityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -308,6 +381,47 @@ namespace API.Migrations
                     b.ToTable("PropuestaEntityUser");
                 });
 
+            modelBuilder.Entity("API.Models.Entity.AsignaturaEntity", b =>
+                {
+                    b.HasOne("API.Models.Entity.CursoEntity", "Curso")
+                        .WithMany("Asignaturas")
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Curso");
+                });
+
+            modelBuilder.Entity("AsignaturaEntityUser", b =>
+                {
+                    b.HasOne("API.Models.Entity.AsignaturaEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AsignaturasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Entity.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CursoEntityUser", b =>
+                {
+                    b.HasOne("API.Models.Entity.CursoEntity", null)
+                        .WithMany()
+                        .HasForeignKey("CursosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Entity.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -372,6 +486,11 @@ namespace API.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Models.Entity.CursoEntity", b =>
+                {
+                    b.Navigation("Asignaturas");
                 });
 #pragma warning restore 612, 618
         }
