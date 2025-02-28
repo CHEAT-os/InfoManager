@@ -17,20 +17,9 @@ namespace WPF_CHEAT_os
             DataContext = _viewModel;
             Loaded += MainWindow_Loaded;
         }
-
-        //De Normal no ponemos NUNCA async void, es siempre Task,
-        //es necesario en este caso por respetar la signatura de Loaded
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                await _viewModel.LoadAsync();
-            }
-            catch (Exception ex)
-            {
-                
-                MessageBox.Show($"Error al cargar los datos: {ex.Message}");
-            }
+            await _viewModel.LoadAsync();
         }
     }
 }

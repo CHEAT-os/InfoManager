@@ -1,30 +1,23 @@
-﻿
-
-namespace WPF_CHEAT_os.Utils
+﻿namespace WPF_CHEAT_os.Utils
 {
     public class Constants
     {
-
-        #region Math
-        public const string Mas = "+";
-        public const string Menos = "-";
-        public const string Por = "x";
-        public const string Division = "÷";
-        public const string Resultado = "Resultado";
-        public const string Pi = "π";
-        #endregion
-
-        #region WPF_Views
-        public const int MAX_NUMBER_ITEMS_STACK_PANEL = 15;
-        public const int MIN_NUMBER_ITEMS_STACK_PANEL = 5;
-        public const string HALLOWEEN_URL_PATH = "/Resources/Halloween.png";
+        public const string BASE_LOCAL_DIRECTORY = "./FILES";
         public const string JSON_FILTER = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
-        #endregion
 
-        #region API Url
-        public const string BASE_URL = "http://localhost:5072/api/";
-        public const string LOGIN_PATH = "users";
+        public const string BASE_URL = "http://localhost:7000/api/";
+        public const string LOGIN_PATH = "users/login";
+        public const string USERS_PATH = "users";
+        public const string REGISTER_PATH = "users/register";
         public const string PROPUESTA_PATH = "propuesta";
-        #endregion
+
+        public const string ERROR_TYC = "Debes aceptar los términos y condiciones";
+        public const string ERROR_PASSWORDEQUALS = "Contraseñas distintas";
+        public const string ERROR_CAMPOSNULL = "Tienes que rellenar todos los campos";
+        public const string CAMBIOS_CONTRASEÑA = "Cambio de contraseña";
+
+        public const string ROLE_REGISTRER_ADMIN = "admin";
+        public const string ROLE_REGISTRER_PROFESOR = "profesor";
+        public const string ROLE_REGISTRER_USER = "user";
     }
 }

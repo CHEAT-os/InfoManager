@@ -3,29 +3,35 @@ using System.Windows;
 
 namespace WPF_CHEAT_os.ViewModel
 {
-    
     public partial class MainViewModel : ViewModelBase
     {
         private ViewModelBase? _selectedViewModel;
-
      
-        public MainViewModel(PrincipalViewModel principalViewModel, PropuestaViewModel propuestaViewModel, VerPropuestaViewModel verPropuestaViewModel)
+        public MainViewModel(PrincipalViewModel principal, PropuestaViewModel propuesta, 
+            VerPropuestaViewModel verPropuesta, LoginViewModel login)
         {
-            _selectedViewModel = principalViewModel;  // Inicia con PrincipalView
-            PrincipalViewModel = principalViewModel;
-            PropuestaViewModel = propuestaViewModel;
-            VerPropuestaViewModel = verPropuestaViewModel;
+            _selectedViewModel = principal;
+
+            PrincipalViewModel = principal;
+            PropuestaViewModel = propuesta;
+            VerPropuestaViewModel = verPropuesta;
+            LoginViewModel loginViewModel = login;
         }
+
+        public LoginViewModel LoginViewModel { get; set; }
+        public PropuestaViewModel PropuestaViewModel { get; set; }
+        public PrincipalViewModel PrincipalViewModel { get; set; }
+        public VerPropuestaViewModel VerPropuestaViewModel { get; set; }
 
         public ViewModelBase? SelectedViewModel
         {
             get => _selectedViewModel;
-            set => SetProperty(ref _selectedViewModel, value);
+            set
+            {
+                SetProperty(ref _selectedViewModel, value);
+            }
         }
 
-        public PropuestaViewModel  PropuestaViewModel { get; }
-    public PrincipalViewModel  PrincipalViewModel { get; }
-        public VerPropuestaViewModel VerPropuestaViewModel { get; }
         public async override Task LoadAsync()
         {
             if (SelectedViewModel is not null)
@@ -34,28 +40,24 @@ namespace WPF_CHEAT_os.ViewModel
             }
         }
 
-        [RelayCommand]
-        private async Task SelectViewModelAsync(ViewModelBase viewModelParameter)
+        private bool _isMenuVisible = true;
+
+        public bool IsMenuVisible
         {
-         
-            if (viewModelParameter is not ViewModelBase viewModel)
-            {
-                return;
-            }
-            
-            SelectedViewModel = viewModel;
-
-            try
-            {
-                await SelectedViewModel.LoadAsync();
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show($"Error al cargar el ViewModel: {ex.Message}");
-            }
+            get => _isMenuVisible;
+            set => SetProperty(ref _isMenuVisible, value);
         }
 
+        [RelayCommand]
+        private async void SelectViewModel(object? parameter)
+        {
+            SelectedViewModel = parameter as ViewModelBase;
+            await LoadAsync();
 
+            // Mostrar menú en vistas seleccionadas
+            IsMenuVisible = SelectedViewModel is PrincipalViewModel
+                 || SelectedViewModel is PropuestaViewModel
+                 || SelectedViewModel is VerPropuestaViewModel;
+        }
     }
 }

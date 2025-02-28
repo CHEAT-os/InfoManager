@@ -1,35 +1,55 @@
 ﻿using WPF_CHEAT_os.DTO;
 using WPF_CHEAT_os.Interfaces;
 using WPF_CHEAT_os.Utils;
-
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WPF_CHEAT_os.Services
 {
-    public class PropuestaService : IPropuestaProvider<PropuestaDTO>
+    public class PropuestaService : IPropuestaProvider
     {
-        public async Task<List<PropuestaDTO>?> GetAsync()
+        private readonly IHttpsJsonClientProvider<PropuestaDTO> _httpsJsonClientProvider;
+
+        public PropuestaService(IHttpsJsonClientProvider<PropuestaDTO> httpsJsonClientProvider)
         {
-            return await HttpJsonClient<List<PropuestaDTO>>.Get(Constants.PROPUESTA_PATH);
+            _httpsJsonClientProvider = httpsJsonClientProvider;
         }
 
-        public async Task<PropuestaDTO?> GetByIdAsync(int id)
+        public async Task<IEnumerable<PropuestaDTO>> GetAsync()
         {
-            return await HttpJsonClient<PropuestaDTO>.Get($"{Constants.PROPUESTA_PATH}/{id}");
+            return await _httpsJsonClientProvider.GetAsync(Constants.PROPUESTA_PATH);
         }
 
-        public async Task<PropuestaDTO?> AddAsync(PropuestaDTO propuesta)
+        public async Task<PropuestaDTO> GetByIdAsync(string id)
         {
-            return await HttpJsonClient<PropuestaDTO>.Post(Constants.PROPUESTA_PATH, propuesta);
+            return await _httpsJsonClientProvider.GetByIdAsync(Constants.PROPUESTA_PATH, id);
         }
 
-        public async Task<bool> UpdateAsync(PropuestaDTO propuesta)
+        public async Task AddAsync(PropuestaDTO propuesta)
         {
-            return await HttpJsonClient<bool>.Put($"{Constants.PROPUESTA_PATH}/{propuesta.Id}", propuesta);
+            try
+            {
+                if (propuesta == null) return;
+                await _httpsJsonClientProvider.PostAsync(Constants.PROPUESTA_PATH, propuesta);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task UpdateAsync(PropuestaDTO propuesta)
         {
-            return await HttpJsonClient<bool>.Delete($"{Constants.PROPUESTA_PATH}/{id}");
+            try
+            {
+                if (propuesta == null) return;
+                await _httpsJsonClientProvider.PutAsync($"{Constants.PROPUESTA_PATH}/{propuesta.Id}", propuesta);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

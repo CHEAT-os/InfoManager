@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Threading.Tasks;
 using System.Windows;
 using WPF_CHEAT_os.DTO;
 using WPF_CHEAT_os.Interfaces;
@@ -9,7 +11,7 @@ namespace WPF_CHEAT_os.ViewModel
 {
     public partial class VerPropuestaViewModel : ViewModelBase
     {
-        private readonly IPropuestaProvider<PropuestaDTO> _propuestaProvider;
+        private readonly IPropuestaProvider _propuestaProvider;
 
         [ObservableProperty]
         private PropuestaDTO? propuesta;
@@ -20,7 +22,7 @@ namespace WPF_CHEAT_os.ViewModel
         [ObservableProperty]
         private PropuestaDTO? propuestaSeleccionada;
 
-        public VerPropuestaViewModel(IPropuestaProvider<PropuestaDTO> propuestaProvider)
+        public VerPropuestaViewModel(IPropuestaProvider propuestaProvider)
         {
             _propuestaProvider = propuestaProvider ?? throw new ArgumentNullException(nameof(propuestaProvider));
         }
@@ -50,19 +52,12 @@ namespace WPF_CHEAT_os.ViewModel
 
             try
             {
-              
-
                 PropuestaSeleccionada.Estado = EstadoSeleccionado;
                 PropuestaSeleccionada.FechaEnvio = DateTime.Now;
-                bool resultado = await _propuestaProvider.UpdateAsync(PropuestaSeleccionada);
+                await _propuestaProvider.UpdateAsync(PropuestaSeleccionada);
 
-
-                MessageBox.Show(resultado
-                    ? "Propuesta actualizada correctamente en la base de datos."
-                    : "Error al actualizar la propuesta.",
-                    resultado ? "Éxito" : "Error",
-                    MessageBoxButton.OK,
-                    resultado ? MessageBoxImage.Information : MessageBoxImage.Error);
+                MessageBox.Show("Propuesta actualizada correctamente en la base de datos.",
+                    "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -70,14 +65,10 @@ namespace WPF_CHEAT_os.ViewModel
             }
         }
 
-
-
-
-        public async Task CargarPropuesta(int id)
+        public async Task CargarPropuesta(string id)
         {
             try
             {
-
                 PropuestaSeleccionada = await _propuestaProvider.GetByIdAsync(id);
                 if (PropuestaSeleccionada != null)
                 {
@@ -90,9 +81,5 @@ namespace WPF_CHEAT_os.ViewModel
                 MessageBox.Show($"Error al cargar la propuesta: {ex.Message}");
             }
         }
-
     }
 }
-
-
-
