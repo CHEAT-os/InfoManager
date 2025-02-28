@@ -9,15 +9,15 @@ namespace WPF_CHEAT_os.DTO
 {
     public class LoginDTO
     {
-        [JsonPropertyName("username")]
-        public string Username { get; set; }
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
         [JsonPropertyName("password")]
         public string Password { get; set; }
         public string Token { get; set; }
 
-        public LoginDTO(string user, string password)
+        public LoginDTO(string mail, string password)
         {
-            Username = user;
+            Email = mail;
             Password = password;
         }
 
