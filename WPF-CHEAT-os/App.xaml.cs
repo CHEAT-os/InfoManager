@@ -36,6 +36,7 @@ public partial class App : Application
         services.AddTransient<PropuestaViewModel>();
         services.AddTransient<VerPropuestaViewModel>();
         services.AddTransient<LoginViewModel>();
+        services.AddTransient<RegistroViewModel>();
 
         //Services
         services.AddSingleton<MainViewModel>();
