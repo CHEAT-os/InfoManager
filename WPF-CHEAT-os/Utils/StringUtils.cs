@@ -1,6 +1,4 @@
-﻿
-namespace WPF_CHEAT_os.Utils 
-
+﻿namespace WPF_CHEAT_os.Utils 
 { 
     public class StringUtils
     {

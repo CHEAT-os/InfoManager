@@ -10,14 +10,40 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+    <Page Remove="Resources\**" />
   </ItemGroup>
 
-<ItemGroup>
+  <ItemGroup>
+    <None Remove="ResourcesFolder\logo-ies-comercio-300x176.png" />
+  </ItemGroup>
+
+    <ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+	     <PackageReference Include="WPF-UI" Version="3.0.5" />
 	</ItemGroup>
 
-	
+    <ItemGroup>
+      <Resource Include="ResourcesFolder\logo-ies-comercio-300x176.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Resource.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resource.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resource.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
 </Project>

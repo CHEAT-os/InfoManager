@@ -5,14 +5,14 @@ using System.Windows;
 using WPF_CHEAT_os.Interfaces;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
-
-
+using System;
+using System.Threading.Tasks;
 
 namespace WPF_CHEAT_os.ViewModel
 {
     public partial class PropuestaViewModel : ViewModelBase
     {
-        private readonly IPropuestaProvider<PropuestaDTO> _propuestaProvider;
+        private readonly IPropuestaProvider _propuestaProvider;
         private readonly IServiceProvider _serviceProvider;
 
         [ObservableProperty]
@@ -20,27 +20,20 @@ namespace WPF_CHEAT_os.ViewModel
 
         [ObservableProperty]
         private PropuestaDTO selectedPropuesta;
-   
 
-        public PropuestaViewModel() { }
-        public PropuestaViewModel(IPropuestaProvider<PropuestaDTO> propuestaProvider, IServiceProvider serviceProvider)
+        public PropuestaViewModel(IPropuestaProvider propuestaProvider, IServiceProvider serviceProvider)
         {
             _propuestaProvider = propuestaProvider;
             _serviceProvider = serviceProvider;
-
-
-            listaDePropuestas = new ObservableCollection<PropuestaDTO>();
         }
-
 
         public override async Task LoadAsync()
         {
             try
             {
-                
                 var propuestas = await _propuestaProvider.GetAsync();
 
-                if (propuestas != null && propuestas.Count > 0)
+                if (propuestas != null)
                 {
                     ListaDePropuestas.Clear();
                     foreach (var propuesta in propuestas)
@@ -63,14 +56,8 @@ namespace WPF_CHEAT_os.ViewModel
             SelectedPropuesta = propuesta;
 
             var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
-            await mainViewModel.VerPropuestaViewModel.CargarPropuesta(SelectedPropuesta.Id);
+            await mainViewModel.VerPropuestaViewModel.CargarPropuesta(SelectedPropuesta.Id.ToString());
             mainViewModel.SelectedViewModel = mainViewModel.VerPropuestaViewModel;
         }
-
-
     }
-
-
 }
-
-

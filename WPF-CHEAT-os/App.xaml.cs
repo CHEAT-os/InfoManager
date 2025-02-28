@@ -35,12 +35,14 @@ public partial class App : Application
         services.AddTransient<PrincipalViewModel>();
         services.AddTransient<PropuestaViewModel>();
         services.AddTransient<VerPropuestaViewModel>();
-
-
+        services.AddTransient<LoginViewModel>();
 
         //Services
-        services.AddSingleton<IPropuestaProvider<PropuestaDTO>, PropuestaService>();
-    
+        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<LoginDTO>();
+        services.AddSingleton<IPropuestaProvider, PropuestaService>();
+        services.AddSingleton(typeof(IHttpsJsonClientProvider<>), typeof(HttpsJsonClientService<>));
+
         return services.BuildServiceProvider();
     }
 

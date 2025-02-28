@@ -12,16 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPF_CHEAT_os.ViewModel;
 
 namespace WPF_CHEAT_os.View
 {
     /// <summary>
-    /// Lógica de interacción para PrincipalView.xaml
+    /// Lógica de interacción para LoginView.xaml
     /// </summary>
-    public partial class PrincipalView : UserControl
+    public partial class LoginView : UserControl
     {
-        public PrincipalView()
+        public LoginView()
         {
             InitializeComponent();
         }
