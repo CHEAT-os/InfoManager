@@ -4,10 +4,11 @@ import { PropuestaService } from 'src/app/service/propuesta.service';
 import { PropuestaModel } from '../../models/propuestaModel';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
+import { AuthService } from 'src/app/service/auth.service'; // ✅ Importar AuthService
 
 @Component({
   selector: 'app-formulario',
-  imports: [ReactiveFormsModule, CommonModule,NavbarComponent],
+  imports: [ReactiveFormsModule, CommonModule, NavbarComponent],
   standalone: true,
   templateUrl: './formulario.component.html',
   styleUrls: ['./formulario.component.css']
@@ -19,41 +20,46 @@ export class FormularioComponent {
     tipoProyecto: new FormControl('', [Validators.required]),
     descripcion: new FormControl('', [Validators.required, Validators.minLength(25)]),
   });
-  
-  formSubmitted = false;  // Variable para saber si el formulario fue enviado
-  successMessage: string = '';  // Mensaje de éxito
-  errorMessage: string = '';  // Mensaje de error
 
-  constructor(private propuestaService: PropuestaService) { }
+  formSubmitted = false;
+  successMessage: string = '';
+  errorMessage: string = '';
+  userEmail: string = ''; // ✅ Variable para almacenar el email del usuario
+
+  constructor(
+    private propuestaService: PropuestaService,
+    private authService: AuthService // ✅ Inyectar AuthService
+  ) {
+    this.userEmail = this.authService.getUserEmail() || ''; // ✅ Obtener el email
+  }
 
   submitApplication() {
-    this.formSubmitted = true;  // Marcamos que se intentó enviar el formulario
+    this.formSubmitted = true;
 
     if (this.applyForm.invalid) {
       console.log('Formulario inválido');
-      return;  // No enviar si el formulario no es válido
+      return;
     }
 
     const propuestaData: PropuestaModel = {
-      email: "",  // email, se pillara usuario logueado
+      email: this.userEmail, // ✅ Usar el email del usuario autenticado
       titulo: this.applyForm.value.NombreProyecto ?? '',
-      descripcion: this.applyForm.value.descripcion?? '',
+      descripcion: this.applyForm.value.descripcion ?? '',
       tipo: this.applyForm.value.tipoProyecto ?? '',
-      estado: "Enviada"
+      estado: 'Enviada'
     };
 
     this.propuestaService.postPropuesta(propuestaData).then(response => {
       console.log('Propuesta enviada:', response);
-      this.successMessage = 'Propuesta enviada con éxito';  // Mensaje de éxito
-      this.errorMessage = '';  // Limpiar mensaje de error si el envío fue exitoso
+      this.successMessage = 'Propuesta enviada con éxito';
+      this.errorMessage = '';
     }).catch(error => {
       console.error('Error al enviar la propuesta:', error);
-      this.successMessage = '';  // Limpiar mensaje de éxito si hubo un error
-      this.errorMessage = 'Hubo un error al enviar la propuesta, por favor inténtalo de nuevo.';  // Mensaje de error
+      this.successMessage = '';
+      this.errorMessage = 'Hubo un error al enviar la propuesta, por favor inténtalo de nuevo.';
     });
   }
 
-  // Método para verificar si un campo tiene errores
   hasError(field: string): boolean {
     return this.applyForm.get(field)?.invalid && this.applyForm.get(field)?.touched || this.formSubmitted;
   }

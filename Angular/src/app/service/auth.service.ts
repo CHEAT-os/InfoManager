@@ -89,4 +89,18 @@ export class AuthService {
       return null;
     }
   }
+
+  getUserEmail(): string | null {
+    const token = this.getToken(); 
+    if (!token) return null;
+  
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1])); // Decodificar token JWT
+      return payload.email || null;
+    } catch (error) {
+      console.error('Error al decodificar el token:', error);
+      return null;
+    }
+  }
+  
 }
