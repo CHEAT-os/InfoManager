@@ -29,17 +29,17 @@ export class AuthService {
         console.log('Login response:', data);
         if (data?.result?.token) {
           this.setToken(data.result.token);
+          localStorage.setItem('userEmail', data.result.email); // ✅ Guarda el email
         } else {
           console.warn('⚠️ No se recibió un token válido:', data);
         }
-        observer.next(data); // 🔥 Asegura que el Observable emita un valor
-        observer.complete(); // 🛑 Finaliza el Observable
+        observer.next(data);
+        observer.complete();
       })
-      .catch(error => {
-        observer.error(error);
-      });
+      .catch(error => observer.error(error));
     });
-  }  
+  }
+  
 
   register(registroDto: RegisterModel): Observable<any> {
     return new Observable<any>(observer => {
@@ -91,16 +91,7 @@ export class AuthService {
   }
 
   getUserEmail(): string | null {
-    const token = this.getToken(); 
-    if (!token) return null;
-  
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1])); // Decodificar token JWT
-      return payload.email || null;
-    } catch (error) {
-      console.error('Error al decodificar el token:', error);
-      return null;
-    }
-  }
+    return localStorage.getItem('userEmail');
+  }  
   
 }
