@@ -3,10 +3,11 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { PropuestaService } from 'src/app/service/propuesta.service';
 import { PropuestaModel } from '../../models/propuestaModel';
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-formulario',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule,NavbarComponent],
   standalone: true,
   templateUrl: './formulario.component.html',
   styleUrls: ['./formulario.component.css']
