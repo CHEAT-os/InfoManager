@@ -38,12 +38,20 @@ export class FormularioComponent implements OnInit {
 
   async submitApplication() {
     this.formSubmitted = true;
-
+    
     if (this.applyForm.invalid) {
       console.log('Formulario inválido');
+  
+      // 🔹 Marca todos los campos como "touched" para que Angular los valide correctamente
+      Object.keys(this.applyForm.controls).forEach(field => {
+        const control = this.applyForm.get(field);
+        control?.markAsTouched();  // Marca como "tocado"
+        control?.updateValueAndValidity();  // Fuerza la validación
+      });
+  
       return;
     }
-
+  
     const propuestaData: PropuestaModel = {
       email: this.userEmail, 
       titulo: this.applyForm.value.NombreProyecto ?? '',
@@ -51,10 +59,14 @@ export class FormularioComponent implements OnInit {
       tipo: this.applyForm.value.tipoProyecto ?? '',
       estado: 'Enviada'
     };
-
+  
     try {
       const response = await this.propuestaService.postPropuesta(propuestaData);
       console.log('Propuesta enviada:', response);
+  
+      this.applyForm.reset();
+      this.formSubmitted = false; 
+  
       this.successMessage = 'Propuesta enviada con éxito';
       this.errorMessage = '';
     } catch (error) {
