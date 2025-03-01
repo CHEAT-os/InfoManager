@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PropuestaService } from 'src/app/service/propuesta.service';
 import { PropuestaModel } from '../../models/propuestaModel';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
-import { AuthService } from 'src/app/service/auth.service'; // ✅ Importar AuthService
+import { AuthService } from 'src/app/service/auth.service'; 
 
 @Component({
   selector: 'app-formulario',
@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/service/auth.service'; // ✅ Importar Auth
   templateUrl: './formulario.component.html',
   styleUrls: ['./formulario.component.css']
 })
-export class FormularioComponent {
+export class FormularioComponent implements OnInit {
   applyForm = new FormGroup({
     NombreAlumno: new FormControl('', [Validators.required, Validators.minLength(5)]),
     NombreProyecto: new FormControl('', [Validators.required, Validators.minLength(5)]),
@@ -24,16 +24,19 @@ export class FormularioComponent {
   formSubmitted = false;
   successMessage: string = '';
   errorMessage: string = '';
-  userEmail: string = ''; // ✅ Variable para almacenar el email del usuario
+  userEmail: string = ''; 
 
   constructor(
     private propuestaService: PropuestaService,
-    private authService: AuthService // ✅ Inyectar AuthService
-  ) {
-    this.userEmail = this.authService.getUserEmail() || ''; // ✅ Obtener el email
+    private authService: AuthService
+  ) {}
+
+  ngOnInit() {
+    this.userEmail = this.authService.getUserEmail() || ''; // ✅ Obtener el email en ngOnInit()
+    console.log('Usuario autenticado:', this.userEmail);
   }
 
-  submitApplication() {
+  async submitApplication() {
     this.formSubmitted = true;
 
     if (this.applyForm.invalid) {
@@ -42,22 +45,23 @@ export class FormularioComponent {
     }
 
     const propuestaData: PropuestaModel = {
-      email: this.userEmail, // ✅ Usar el email del usuario autenticado
+      email: this.userEmail, 
       titulo: this.applyForm.value.NombreProyecto ?? '',
       descripcion: this.applyForm.value.descripcion ?? '',
       tipo: this.applyForm.value.tipoProyecto ?? '',
       estado: 'Enviada'
     };
 
-    this.propuestaService.postPropuesta(propuestaData).then(response => {
+    try {
+      const response = await this.propuestaService.postPropuesta(propuestaData);
       console.log('Propuesta enviada:', response);
       this.successMessage = 'Propuesta enviada con éxito';
       this.errorMessage = '';
-    }).catch(error => {
+    } catch (error) {
       console.error('Error al enviar la propuesta:', error);
       this.successMessage = '';
       this.errorMessage = 'Hubo un error al enviar la propuesta, por favor inténtalo de nuevo.';
-    });
+    }
   }
 
   hasError(field: string): boolean {
