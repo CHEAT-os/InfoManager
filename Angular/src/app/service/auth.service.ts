@@ -29,7 +29,7 @@ export class AuthService {
         console.log('Login response:', data);
         if (data?.result?.token) {
           this.setToken(data.result.token);
-          localStorage.setItem('userEmail', data.result.email); // ✅ Guarda el email
+          localStorage.setItem('userEmail', data.result.user.email); // ✅ Guarda el email
         } else {
           console.warn('⚠️ No se recibió un token válido:', data);
         }
