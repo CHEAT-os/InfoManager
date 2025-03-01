@@ -9,6 +9,6 @@ namespace API.Models.Entity
         public string Nombre { get; set; }
         public string Turno { get; set; }
         public ICollection<User> Users { get; } = [];
-        public ICollection<AsignaturaEntity> Asignaturas { get; } = [];
+        public ICollection<AsignaturaEntity> Asignaturas { get; set; }
     }
 }

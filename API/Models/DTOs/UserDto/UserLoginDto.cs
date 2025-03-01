@@ -1,14 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.Models.DTOs.UserDto
+namespace API.Models.DTOs.UserDTO
 {
-    public class UserLoginDto
+    public class UserLoginDTO
     {
-        [Required(ErrorMessage = "Field required: UserName")]
+        [Required(ErrorMessage = "Field required: Email")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Field required: Password")]      
         public string Password { get; set; }
-
-
     }
 }

@@ -1,11 +1,9 @@
 ﻿using API.Attributes;
-using API.Attributes;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Models.DTOs.UserDto
+namespace API.Models.DTOs.UserDTO
 {
-    public class UserRegistrationDto
+    public class UserRegistrationDTO
     {
         [Required(ErrorMessage = "Field required: Name")]
         public string Name { get; set; }

@@ -1,7 +1,7 @@
 ﻿using API.Models.DTOs;
 using System.Net;
 using API.Models.DTOs.Propuesta;
-using API.Models.DTOs.UserDto;
+using API.Models.DTOs.UserDTO;
 using API.Models.Entity;
 using API.Repository;
 using API.Repository.IRepository;
@@ -30,7 +30,7 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "alumno,profesor")]
-        [HttpPost("proponer")]
+        [HttpPost("enviar")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

@@ -30,7 +30,8 @@ namespace API.Data
 
             modelBuilder.Entity<AsignaturaEntity>()
                 .HasOne(e => e.Curso)
-                .WithMany(e => e.Asignaturas);
+                .WithMany(e => e.Asignaturas)
+                .HasForeignKey(e => e.CursoId);
 
         }
 

@@ -1,8 +1,8 @@
 ﻿using API.Models.Entity;
 
-namespace API.Models.DTOs.UserDto
+namespace API.Models.DTOs.UserDTO
 {
-    public class UserLoginResponseDto
+    public class UserLoginResponseDTO
     {
         public AppUser User { get; set; }
         public string Token { get; set; }

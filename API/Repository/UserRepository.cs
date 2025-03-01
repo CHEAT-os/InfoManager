@@ -1,5 +1,5 @@
 ﻿using API.Data;
-using API.Models.DTOs.UserDto;
+using API.Models.DTOs.UserDTO;
 using API.Repository.IRepository;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -47,15 +47,15 @@ namespace API.Repository
             return !_context.AppUsers.Any(user => user.Email == email);
         }
 
-        public async Task<UserLoginResponseDto> Login(UserLoginDto userLoginDto)
+        public async Task<UserLoginResponseDTO> Login(UserLoginDTO userLoginDTO)
         {
-            var user = _context.AppUsers.FirstOrDefault(u => u.Email.ToLower() == userLoginDto.Email.ToLower());
-            bool isValid = await _userManager.CheckPasswordAsync(user, userLoginDto.Password);
+            var user = _context.AppUsers.FirstOrDefault(u => u.Email.ToLower() == userLoginDTO.Email.ToLower());
+            bool isValid = await _userManager.CheckPasswordAsync(user, userLoginDTO.Password);
 
             //user doesn't exist ?
             if (user == null || !isValid)
             {
-                return new UserLoginResponseDto { Token = "", User = null };
+                return new UserLoginResponseDTO { Token = "", User = null };
             }
 
             //User does exist
@@ -83,7 +83,7 @@ namespace API.Repository
 
             var jwtToken = tokenHandler.CreateToken(tokenDescriptor);
 
-            UserLoginResponseDto userLoginResponseDto = new UserLoginResponseDto
+            UserLoginResponseDTO userLoginResponseDto = new UserLoginResponseDTO
             {
                 Token = tokenHandler.WriteToken(jwtToken),
                 User = user
@@ -91,17 +91,17 @@ namespace API.Repository
             return userLoginResponseDto;
         }
 
-        public async Task<UserLoginResponseDto?> Register(UserRegistrationDto userRegistrationDto)
+        public async Task<UserLoginResponseDTO?> Register(UserRegistrationDTO userRegistrationDTO)
         {
             AppUser user = new AppUser()
             {
-                UserName = userRegistrationDto.Email,
-                Name = userRegistrationDto.Name,
-                Email = userRegistrationDto.Email,
-                NormalizedEmail = userRegistrationDto.Email.ToUpper(),
+                UserName = userRegistrationDTO.Email.Split("@")[0],
+                Name = userRegistrationDTO.Name,
+                Email = userRegistrationDTO.Email,
+                NormalizedEmail = userRegistrationDTO.Email.ToUpper(),
             };
 
-            var result = await _userManager.CreateAsync(user, userRegistrationDto.Password);
+            var result = await _userManager.CreateAsync(user, userRegistrationDTO.Password);
             if (!result.Succeeded)
             {
                 return null;
@@ -113,7 +113,7 @@ namespace API.Repository
                 await _roleManager.CreateAsync(new IdentityRole("alumno"));
                 await _roleManager.CreateAsync(new IdentityRole("profesor"));
             }
-            switch (userRegistrationDto.Rol)
+            switch (userRegistrationDTO.Rol)
             {
                 case "admin":
                     await _userManager.AddToRoleAsync(user, "admin");
@@ -128,9 +128,9 @@ namespace API.Repository
                     break;
             }
            
-            AppUser? newUser = _context.AppUsers.FirstOrDefault(u => u.Email == userRegistrationDto.Email);
+            AppUser? newUser = _context.AppUsers.FirstOrDefault(u => u.Email == userRegistrationDTO.Email);
 
-            return new UserLoginResponseDto
+            return new UserLoginResponseDTO
             {
                 User = newUser
             };
