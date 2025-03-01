@@ -1,12 +1,16 @@
-import { PropuestaModel } from "./propuestaModel";
+export interface UserModel {
+   
+    statusCode: number;
+ 
+    isSuccess: boolean;
+  
+    errorMessages: Array<object>;
 
-export interface userModel{
-    id: number;
-    name: string;
-    apellidos: string;
-    userName: string;
-    email: string;
-    password: string;
-    rol: string;
-    propuestas: PropuestaModel[];
+    result: Result;
 }
+
+export interface Result {
+  
+    token: string;
+}
+
