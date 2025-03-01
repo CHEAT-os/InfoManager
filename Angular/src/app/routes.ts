@@ -4,6 +4,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { FormularioComponent } from './pages/formulario/formulario.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { EstadoComponent } from './pages/estado/estado.component';
 
 
 const routeConfig: Routes = [
@@ -26,6 +27,11 @@ const routeConfig: Routes = [
     path: 'formulario',
     component: FormularioComponent,
     title: 'formulario',
+  },
+  {
+    path: 'estado',
+    component: EstadoComponent,
+    title: 'estado',
   },
   {
     path: '**',

@@ -76,5 +76,17 @@ export class AuthService {
     this.token = null;
     localStorage.removeItem('authToken');
   }
-  
+  // ✅ Nuevo método para obtener el ID del usuario desde el token
+  getUserId(): number | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1])); // Decodifica el token
+      return payload.userId; // Ajusta según cómo se estructure tu token
+    } catch (error) {
+      console.error('Error al decodificar el token:', error);
+      return null;
+    }
+  }
 }
