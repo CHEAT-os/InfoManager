@@ -6,5 +6,6 @@ namespace API.Models.DTOs.Curso
     {
         [Required(ErrorMessage = "Field required: nombre")]
         public string Nombre { get; set; }
+        public string Turno { get; set; }
     }
 }

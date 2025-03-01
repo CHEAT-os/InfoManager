@@ -1,5 +1,5 @@
 ﻿using API.Models.DTOs;
-using API.Models.DTOs.UserDto;
+using API.Models.DTOs.UserDTO;
 using API.Repository;
 using API.Repository.IRepository;
 using AutoMapper;
@@ -30,14 +30,14 @@ namespace API.Controllers
         public IActionResult GetUsers()
         {
             var userList = _userRepository.GetUsers();
-            var userListDto = new List<UserDto>();
+            var userListDTO = new List<UserDTO>();
 
             foreach (var user in userList)
             {
-                userListDto.Add(_mapper.Map<UserDto>(user));
+                userListDTO.Add(_mapper.Map<UserDTO>(user));
             }
 
-            return Ok(userListDto);
+            return Ok(userListDTO);
         }
 
 
@@ -46,14 +46,14 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Register(UserRegistrationDto userRegistrationDto)
+        public async Task<IActionResult> Register(UserRegistrationDTO userRegistrationDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(new { error = "Incorrect Input", message = ModelState });
             }
 
-            if (!_userRepository.IsUniqueUser(userRegistrationDto.Email))
+            if (!_userRepository.IsUniqueUser(userRegistrationDTO.Email))
             {
                 _reponseApi.StatusCode = HttpStatusCode.BadRequest;
                 _reponseApi.IsSuccess = false;
@@ -61,7 +61,7 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            var newUser = await _userRepository.Register(userRegistrationDto);
+            var newUser = await _userRepository.Register(userRegistrationDTO);
             if (newUser == null)
             {
                 _reponseApi.StatusCode = HttpStatusCode.BadRequest;
@@ -81,9 +81,9 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
+        public async Task<IActionResult> Login(UserLoginDTO userLoginDTO)
         {
-            var responseLogin = await _userRepository.Login(userLoginDto);
+            var responseLogin = await _userRepository.Login(userLoginDTO);
 
             if (responseLogin.User == null || string.IsNullOrEmpty(responseLogin.Token))
             {

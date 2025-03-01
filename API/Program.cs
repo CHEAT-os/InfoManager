@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IPropuestaRepository, PropuestaRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICursoRepository, CursoRepository>();
+builder.Services.AddScoped<IAsignaturaRepository, AsignaturaRepository>();
 builder.Services.AddAutoMapper(typeof(ApplicationMapper));
 
 //builder.Services.AddScoped<IHouseRepository, HouseRepository>();

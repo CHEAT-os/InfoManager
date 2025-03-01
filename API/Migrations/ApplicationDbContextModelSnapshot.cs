@@ -92,6 +92,28 @@ namespace API.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("API.Models.Entity.AsignaturaEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CursoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CursoId");
+
+                    b.ToTable("Asignatura");
+                });
+
             modelBuilder.Entity("API.Models.Entity.CursoEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -101,6 +123,10 @@ namespace API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Turno")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -150,13 +176,9 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Dni")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -170,16 +192,27 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserName", "Dni")
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("AsignaturaEntityUser", b =>
+                {
+                    b.Property<int>("AsignaturasId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AsignaturasId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("AsignaturaEntityUser");
                 });
 
             modelBuilder.Entity("CursoEntityUser", b =>
@@ -345,6 +378,32 @@ namespace API.Migrations
                     b.ToTable("PropuestaEntityUser");
                 });
 
+            modelBuilder.Entity("API.Models.Entity.AsignaturaEntity", b =>
+                {
+                    b.HasOne("API.Models.Entity.CursoEntity", "Curso")
+                        .WithMany("Asignaturas")
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Curso");
+                });
+
+            modelBuilder.Entity("AsignaturaEntityUser", b =>
+                {
+                    b.HasOne("API.Models.Entity.AsignaturaEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AsignaturasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Entity.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CursoEntityUser", b =>
                 {
                     b.HasOne("API.Models.Entity.CursoEntity", null)
@@ -424,6 +483,11 @@ namespace API.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Models.Entity.CursoEntity", b =>
+                {
+                    b.Navigation("Asignaturas");
                 });
 #pragma warning restore 612, 618
         }

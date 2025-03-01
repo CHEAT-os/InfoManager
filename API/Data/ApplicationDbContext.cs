@@ -24,6 +24,15 @@ namespace API.Data
                 .HasMany(e => e.Cursos)
                 .WithMany(e => e.Users);
 
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Asignaturas)
+                .WithMany(e => e.Users);
+
+            modelBuilder.Entity<AsignaturaEntity>()
+                .HasOne(e => e.Curso)
+                .WithMany(e => e.Asignaturas)
+                .HasForeignKey(e => e.CursoId);
+
         }
 
         //Add models here
@@ -31,5 +40,6 @@ namespace API.Data
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<PropuestaEntity> Propuesta { get; set; }
         public DbSet<CursoEntity> Curso { get; set; }
+        public DbSet<AsignaturaEntity> Asignatura { get; set; }
     }
 }

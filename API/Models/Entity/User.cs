@@ -17,5 +17,6 @@ namespace API.Models.Entity
         public string Rol { get; set; }
         public ICollection<PropuestaEntity> Propuestas { get; } = [];
         public ICollection<CursoEntity> Cursos { get; } = [];
+        public ICollection<AsignaturaEntity> Asignaturas { get; } = [];
     }
 }

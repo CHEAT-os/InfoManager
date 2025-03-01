@@ -1,40 +1,39 @@
 ﻿using API.Models.DTOs;
-using System.Net;
-using API.Models.DTOs.Propuesta;
-using API.Models.DTOs.UserDTO;
+using API.Models.DTOs.Asignatura;
+using API.Models.DTOs.Curso;
 using API.Models.Entity;
 using API.Repository;
 using API.Repository.IRepository;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Humanizer;
+using System.Net;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PropuestaController : BaseController<PropuestaEntity, PropuestaDTO, CreatePropuestaDTO>
+    public class AsignaturaController : BaseController<AsignaturaEntity, AsignaturaDTO, CreateAsignaturaDTO>
     {
-        private readonly IPropuestaRepository _propuestaRepository;
+        private readonly IAsignaturaRepository _asignaturaRepository;
         protected readonly IMapper _mapper;
         protected readonly ILogger _logger;
         protected ResponseApi _reponseApi;
-        public PropuestaController(IPropuestaRepository propuestaRepository, IMapper mapper, ILogger<PropuestaRepository> logger) : base(propuestaRepository, mapper, logger)
+        public AsignaturaController(IAsignaturaRepository asignaturaRepository, IMapper mapper, ILogger<AsignaturaController> logger) : base(asignaturaRepository, mapper, logger)
         {
-            _propuestaRepository = propuestaRepository;
+            _asignaturaRepository = asignaturaRepository;
             _reponseApi = new ResponseApi();
             _mapper = mapper;
             _logger = logger;
         }
 
-        [Authorize(Roles = "alumno,profesor")]
-        [HttpPost("enviar")]
+        [Authorize(Roles = "admin,profesor")]
+        [HttpPost("crear")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Proponer(CreatePropuestaDTO createPropuestaDto)
+        public async Task<IActionResult> Crear(CreateAsignaturaDTO createAsignaturaDTO)
         {
             try
             {
@@ -42,12 +41,12 @@ namespace API.Controllers
                 {
                     _reponseApi.StatusCode = HttpStatusCode.BadRequest;
                     _reponseApi.IsSuccess = false;
-                    _reponseApi.ErrorMessages.Add("Formato de propuesta inválido");
+                    _reponseApi.ErrorMessages.Add("Formato de asignatura inválido");
                     return BadRequest(_reponseApi);
                 }
 
-                var propuestaEntity = _mapper.Map<PropuestaEntity>(createPropuestaDto);
-                var responsePropuesta = await _propuestaRepository.CreateAsync(propuestaEntity);
+                var asignaturaEntity = _mapper.Map<AsignaturaEntity>(createAsignaturaDTO);
+                var responseCurso = await _asignaturaRepository.CreateAsync(asignaturaEntity);
 
                 _reponseApi.StatusCode = HttpStatusCode.OK;
                 _reponseApi.IsSuccess = true;
@@ -55,11 +54,11 @@ namespace API.Controllers
             }
             catch (DbUpdateException ex)
             {
-                return StatusCode(500, "Error al crear la propuesta:: " + ex.Message + ":\n" + ex.InnerException);
+                return StatusCode(500, "Error al crear la asignatura: " + ex.Message + ":\n" + ex.InnerException);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error creating propuesta: " + ex.Message);
+                return StatusCode(500, "Error creating asignatura: " + ex.Message);
             }
         }
     }

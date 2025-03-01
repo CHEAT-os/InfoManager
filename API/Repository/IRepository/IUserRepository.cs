@@ -1,4 +1,4 @@
-﻿using API.Models.DTOs.UserDto;
+﻿using API.Models.DTOs.UserDTO;
 using API.Models.Entity;
 
 namespace API.Repository.IRepository
@@ -8,7 +8,7 @@ namespace API.Repository.IRepository
         ICollection<AppUser> GetUsers();
         AppUser GetUser(string id);
         bool IsUniqueUser(string userName);
-        Task<UserLoginResponseDto> Login(UserLoginDto userLoginDto);
-        Task<UserLoginResponseDto> Register(UserRegistrationDto userRegistrationDto);
+        Task<UserLoginResponseDTO> Login(UserLoginDTO userLoginDTO);
+        Task<UserLoginResponseDTO> Register(UserRegistrationDTO userRegistrationDTO);
     }
 }
