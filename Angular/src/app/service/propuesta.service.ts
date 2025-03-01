@@ -12,6 +12,9 @@ export class PropuestaService {
 
   private getAuthHeaders(): { [key: string]: string } {
     const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No se encontró un token de autenticación.');
+    }
     return {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -19,30 +22,57 @@ export class PropuestaService {
   }
 
   async postPropuesta(propuesta: PropuestaModel): Promise<PropuestaModel> {
-    const response = await fetch(this.baseUrl, {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify(propuesta)
-  });
+    try {
+      const response = await fetch(this.baseUrl, {
+        method: "POST",
+        headers: this.getAuthHeaders(), // ✅ Se usa el token aquí
+        body: JSON.stringify(propuesta)
+      });
 
-  return await response.json();
-}
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
 
-async getPropuestaById(id: number): Promise<PropuestaModel | undefined> {
-  const response = await fetch(`${this.baseUrl}/${id}`, {
-    method: 'GET',
-    headers: this.getAuthHeaders()
-  });
-  return (await response.json()) as PropuestaModel | undefined;
-}
+      return await response.json();
+    } catch (error) {
+      console.error('Error en postPropuesta:', error);
+      throw error; // Se vuelve a lanzar para manejarlo en el componente
+    }
+  }
 
-async getPropuestasUsuario(userId: number): Promise<PropuestaModel[]> {
-  const response = await fetch(`${this.baseUrl}/usuario/${userId}`, {
-    method: 'GET',
-    headers: this.getAuthHeaders()
-  });
-  return await response.json();
-}
+  async getPropuestaById(id: number): Promise<PropuestaModel | undefined> {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'GET',
+        headers: this.getAuthHeaders()
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error(`Error al obtener propuesta con ID ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  async getPropuestasUsuario(userId: number): Promise<PropuestaModel[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/usuario/${userId}`, {
+        method: 'GET',
+        headers: this.getAuthHeaders()
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error(`Error al obtener propuestas del usuario ${userId}:`, error);
+      return [];
+    }
+  }
 }
