@@ -52,8 +52,8 @@ namespace WPF_CHEAT_os.ViewModel
 
             try
             {
-                PropuestaSeleccionada.Estado = EstadoSeleccionado;
-                PropuestaSeleccionada.FechaEnvio = DateTime.Now;
+                //PropuestaSeleccionada.Estado = EstadoSeleccionado;
+                //PropuestaSeleccionada.FechaEnvio = DateTime.Now;
                 await _propuestaProvider.UpdateAsync(PropuestaSeleccionada);
 
                 MessageBox.Show("Propuesta actualizada correctamente en la base de datos.",
@@ -73,7 +73,7 @@ namespace WPF_CHEAT_os.ViewModel
                 if (PropuestaSeleccionada != null)
                 {
                     Propuesta = PropuestaSeleccionada;
-                    EstadoSeleccionado = PropuestaSeleccionada.Estado;
+                    //EstadoSeleccionado = PropuestaSeleccionada.Estado;
                 }
             }
             catch (Exception ex)

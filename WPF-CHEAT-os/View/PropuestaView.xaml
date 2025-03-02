@@ -14,6 +14,14 @@
               d:DesignHeight="500" d:DesignWidth="800">
 
     <Grid>
+        <Button Content="Autocompletar"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="10,10,0,0"
+                Padding="5"
+                Command="{Binding AutocompletarCommand}">
+        </Button>
+
         <TextBlock Text="Propuestas Enviadas por los Alumnos" FontSize="24" HorizontalAlignment="Center" Margin="0,20,0,0"/>
 
         <DataGrid x:Name="PropuestasDataGrid"
@@ -21,18 +29,32 @@
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
-                  IsReadOnly="True" 
+                  IsReadOnly="False" 
                   ItemsSource="{Binding ListaDePropuestas}"
                   SelectionMode="Single"
                   SelectedItem="{Binding SelectedPropuesta, Mode=TwoWay}">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50" />
+                <DataGridTextColumn Header="Titulo" Binding="{Binding Titulo}" Width="100"/>
                 <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="200" />
-                <DataGridTextColumn Header="Fecha de Envío" Binding="{Binding FechaEnvio, StringFormat=d}" Width="120"/>
                 <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
-                <DataGridTextColumn Header="Alumno" Binding="{Binding Alumno.Nombre}" Width="150"/>
+
+                <DataGridComboBoxColumn Header="Profesor 1"
+                                        SelectedItemBinding="{Binding Profesor1, Mode=TwoWay}"
+                                        ItemsSource="{Binding Profesores}"
+                                        Width="100"/>
+
+                <DataGridComboBoxColumn Header="Profesor 2"
+                                        SelectedItemBinding="{Binding Profesor2, Mode=TwoWay}"
+                                        ItemsSource="{Binding Profesores}"
+                                        Width="100"/>
+
+                <DataGridComboBoxColumn Header="Profesor 3"
+                                        SelectedItemBinding="{Binding Profesor3, Mode=TwoWay}"
+                                        ItemsSource="{Binding Profesores}"
+                                        Width="100"/>
             </DataGrid.Columns>
+
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick"
                       Command="{Binding VerDetallesCommand}"
@@ -42,4 +64,3 @@
         </DataGrid>
     </Grid>
 </UserControl>
-

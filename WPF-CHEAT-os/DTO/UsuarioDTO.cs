@@ -7,26 +7,23 @@ using System.Threading.Tasks;
 
 namespace WPF_CHEAT_os.DTO
 {
-    public class RegistroDTO
+    public class UsuarioDTO
     {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
         [JsonPropertyName("name")]
-        public string Nombre { get; set; }
+        public string Name { get; set; }
         [JsonPropertyName("apellidos")]
-        public string Apellido { get; set; }
+        public string Apellidos { get; set; }
         [JsonPropertyName("email")]
         public string Email { get; set; }
         [JsonPropertyName("password")]
         public string Password { get; set; }
         [JsonPropertyName("rol")]
         public string Rol { get; set; }
-
-        public RegistroDTO(string name, string apellido, string email, string password, string role)
-        {
-            Nombre = name;
-            Apellido = apellido;
-            Email = email;
-            Password = password;
-            Rol = role;
-        }
+        [JsonPropertyName("propuestas")]
+        public ICollection<PropuestaDTO> Propuestas { get; } = [];
+        [JsonPropertyName("cursos")]
+        public ICollection<CursoDTO> Cursos { get; } = [];
     }
 }
