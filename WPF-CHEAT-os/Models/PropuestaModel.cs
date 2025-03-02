@@ -1,4 +1,5 @@
 ﻿
+using WPF_CHEAT_os.DTO;
 using WPF_CHEAT_os.Utils;
 
 namespace WPF_CHEAT_os.Models
@@ -9,9 +10,9 @@ namespace WPF_CHEAT_os.Models
         public string Email { get; set; }
         public string Descripcion { get; set; }
         public string Estado { get; set; }
-        public string Profesor1 { get; set; }
-        public string Profesor2 { get; set; }
-        public string Profesor3 { get; set; }
+        public ProfesorModel Profesor1 { get; set; }
+        public ProfesorModel Profesor2 { get; set; }
+        public ProfesorModel Profesor3 { get; set; }
 
     }
 }

@@ -25,14 +25,14 @@
         <TextBlock Text="Propuestas Enviadas por los Alumnos" FontSize="24" HorizontalAlignment="Center" Margin="0,20,0,0"/>
 
         <DataGrid x:Name="PropuestasDataGrid"
-                  Margin="10,60,10,10"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  CanUserDeleteRows="False"
-                  IsReadOnly="False" 
-                  ItemsSource="{Binding ListaDePropuestas}"
-                  SelectionMode="Single"
-                  SelectedItem="{Binding SelectedPropuesta, Mode=TwoWay}">
+          Margin="10,60,10,10"
+          AutoGenerateColumns="False"
+          CanUserAddRows="False"
+          CanUserDeleteRows="False"
+          IsReadOnly="False" 
+          ItemsSource="{Binding ListaDePropuestas}"
+          SelectionMode="Single"
+          SelectedItem="{Binding SelectedPropuesta, Mode=TwoWay}">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="100"/>
@@ -40,20 +40,56 @@
                 <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="200" />
                 <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
 
-                <DataGridComboBoxColumn Header="Profesor 1"
-                                        SelectedItemBinding="{Binding Profesor1, Mode=TwoWay}"
-                                        ItemsSource="{Binding Profesores}"
-                                        Width="100"/>
+                <!-- Profesor 1 -->
+                <DataGridTemplateColumn Header="Profesor 1" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Profesor1.Nombre}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding DataContext.Profesores, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                              SelectedItem="{Binding Profesor1, Mode=TwoWay}"
+                              DisplayMemberPath="Nombre"
+                              Width="140"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
 
-                <DataGridComboBoxColumn Header="Profesor 2"
-                                        SelectedItemBinding="{Binding Profesor2, Mode=TwoWay}"
-                                        ItemsSource="{Binding Profesores}"
-                                        Width="100"/>
+                <!-- Profesor 2 -->
+                <DataGridTemplateColumn Header="Profesor 2" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Profesor2.Nombre}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding DataContext.Profesores, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                              SelectedItem="{Binding Profesor2, Mode=TwoWay}"
+                              DisplayMemberPath="Nombre"
+                              Width="140"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
 
-                <DataGridComboBoxColumn Header="Profesor 3"
-                                        SelectedItemBinding="{Binding Profesor3, Mode=TwoWay}"
-                                        ItemsSource="{Binding Profesores}"
-                                        Width="100"/>
+                <!-- Profesor 3 -->
+                <DataGridTemplateColumn Header="Profesor 3" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Profesor3.Nombre}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding DataContext.Profesores, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                              SelectedItem="{Binding Profesor3, Mode=TwoWay}"
+                              DisplayMemberPath="Nombre"
+                              Width="140"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
 
             <DataGrid.InputBindings>
@@ -63,5 +99,6 @@
             </DataGrid.InputBindings>
 
         </DataGrid>
+
     </Grid>
 </UserControl>

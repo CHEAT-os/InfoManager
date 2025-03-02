@@ -24,7 +24,7 @@ namespace WPF_CHEAT_os.ViewModel
         private ObservableCollection<PropuestaModel> listaDePropuestas;
 
         [ObservableProperty]
-        private ObservableCollection<UsuarioDTO> _Profesores;
+        private ObservableCollection<ProfesorModel> _Profesores;
 
         [ObservableProperty]
         private PropuestaDTO selectedPropuesta;
@@ -38,6 +38,14 @@ namespace WPF_CHEAT_os.ViewModel
         [ObservableProperty]
         private string _Estado;
 
+        [ObservableProperty]
+        public ProfesorModel _Profesor1;
+        [ObservableProperty]
+        public ProfesorModel _Profesor2;
+        [ObservableProperty]
+        public ProfesorModel _Profesor3;
+
+
         public PropuestaViewModel(IPropuestaProvider propuestaProvider, IServiceProvider serviceProvider, 
                                     IUsuarioProvider usuarioProvider, IAsignarProvider asignarProvider)
         {
@@ -47,7 +55,7 @@ namespace WPF_CHEAT_os.ViewModel
             _asignarProvider = asignarProvider;
 
             listaDePropuestas = new ObservableCollection<PropuestaModel>();
-            Profesores = new ObservableCollection<UsuarioDTO>();
+            Profesores = new ObservableCollection<ProfesorModel>();
         }
 
         public override async Task LoadAsync()
@@ -55,7 +63,8 @@ namespace WPF_CHEAT_os.ViewModel
             try
             {
                 var propuestasDto = await _propuestaProvider.GetAsync();
-                var profesores = await _usuarioService.GetAsync();
+
+                var profesores = await _usuarioService.GetGetUsuarioDTOAsync();
 
                 if (propuestasDto != null)
                 {
@@ -68,9 +77,9 @@ namespace WPF_CHEAT_os.ViewModel
                             Email = propuestaDto.Email,
                             Descripcion = propuestaDto.Descripcion,
                             Estado = propuestaDto.Estado,
-                            Profesor1 = string.Empty,
-                            Profesor2 = string.Empty,
-                            Profesor3 = string.Empty
+                            Profesor1 = new ProfesorModel(),
+                            Profesor2 = new ProfesorModel(),
+                            Profesor3 = new ProfesorModel()
                         };
 
                         ListaDePropuestas.Add(propuestaModel);
@@ -84,7 +93,11 @@ namespace WPF_CHEAT_os.ViewModel
                     {
                         if (profesor.Rol.Equals(Constants.ROLE_REGISTRER_PROFESOR))
                         {
-                            Profesores.Add(profesor);
+                            var profe = new ProfesorModel
+                            {
+                                Nombre = profesor.Name
+                            };
+                            Profesores.Add(profe);
                         }
                     }
                 }
@@ -97,16 +110,15 @@ namespace WPF_CHEAT_os.ViewModel
 
 
         [RelayCommand]
-        private async Task VerDetallesAsync(PropuestaDTO propuesta)
+        private async Task VerDetallesAsync()
         {
-            if (propuesta == null) return;
-
-            SelectedPropuesta = propuesta;
+            if (SelectedPropuesta == null) return;
 
             var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
             await mainViewModel.VerPropuestaViewModel.CargarPropuesta(SelectedPropuesta.Id.ToString());
             mainViewModel.SelectedViewModel = mainViewModel.VerPropuestaViewModel;
         }
+
 
         [RelayCommand]
         private async Task Autocompletar()
@@ -114,7 +126,7 @@ namespace WPF_CHEAT_os.ViewModel
             try
             {
                 // Obtener todos los usuarios
-                var usuarios = await _usuarioService.GetAsync();
+                var usuarios = await _usuarioService.GetUsuarioDTOAsync();
 
                 if (usuarios == null || !usuarios.Any())
                 {

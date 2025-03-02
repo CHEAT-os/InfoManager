@@ -9,6 +9,7 @@ namespace WPF_CHEAT_os.Interfaces
 {
     public interface IUsuarioProvider
     {
-        Task<IEnumerable<UsuarioDTO>> GetAsync();
+        Task<IEnumerable<UsuarioDTO>> GetUsuarioDTOAsync();
+        Task<IEnumerable<GetUsuarioDTO>> GetGetUsuarioDTOAsync();
     }
 }
