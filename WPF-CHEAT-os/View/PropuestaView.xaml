@@ -35,7 +35,7 @@
                   SelectedItem="{Binding SelectedPropuesta, Mode=TwoWay}">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Alumno" Binding="{Binding Alumno.Nombre}" Width="100"/>
+                <DataGridTextColumn Header="Alumno" Binding="{Binding Nombre}" Width="100"/>
                 <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="200" />
                 <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
 
