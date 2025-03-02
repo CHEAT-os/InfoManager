@@ -6,7 +6,7 @@ import { PropuestaModel } from '../models/propuestaModel';
 })
 export class PropuestaService {
 
-  readonly baseUrl = 'https://localhost:7000/api/Propuesta/proponer';
+  readonly baseUrl = 'https://localhost:7000/api/Propuesta/enviar';
 
   constructor() { }
 

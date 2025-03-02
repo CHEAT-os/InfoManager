@@ -65,6 +65,7 @@ namespace WPF_CHEAT_os.ViewModel
                         var propuestaModel = new PropuestaModel
                         {
                             Titulo = propuestaDto.Titulo,
+                            Email = propuestaDto.Email,
                             Descripcion = propuestaDto.Descripcion,
                             Estado = propuestaDto.Estado,
                             Profesor1 = string.Empty,
