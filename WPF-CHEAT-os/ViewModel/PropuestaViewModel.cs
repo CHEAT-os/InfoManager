@@ -9,6 +9,7 @@ using System;
 using System.Threading.Tasks;
 using WPF_CHEAT_os.Utils;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using WPF_CHEAT_os.Models;
 
 namespace WPF_CHEAT_os.ViewModel
 {
@@ -20,7 +21,7 @@ namespace WPF_CHEAT_os.ViewModel
         private readonly IAsignarProvider _asignarProvider;
 
         [ObservableProperty]
-        private ObservableCollection<PropuestaDTO> listaDePropuestas;
+        private ObservableCollection<PropuestaModel> listaDePropuestas;
 
         [ObservableProperty]
         private ObservableCollection<UsuarioDTO> _Profesores;
@@ -45,7 +46,7 @@ namespace WPF_CHEAT_os.ViewModel
             _usuarioService = usuarioProvider;
             _asignarProvider = asignarProvider;
 
-            listaDePropuestas = new ObservableCollection<PropuestaDTO>();
+            listaDePropuestas = new ObservableCollection<PropuestaModel>();
             Profesores = new ObservableCollection<UsuarioDTO>();
         }
 
@@ -53,25 +54,32 @@ namespace WPF_CHEAT_os.ViewModel
         {
             try
             {
-                var propuestas = await _propuestaProvider.GetAsync();
+                var propuestasDto = await _propuestaProvider.GetAsync();
                 var profesores = await _usuarioService.GetAsync();
 
-                if (propuestas != null)
+                if (propuestasDto != null)
                 {
                     ListaDePropuestas.Clear();
-                    foreach (var propuesta in propuestas)
+                    foreach (var propuestaDto in propuestasDto)
                     {
-                        ListaDePropuestas.Add(propuesta);
-                        Nombre = propuesta.Titulo;
-                        Descripcion = propuesta.Descripcion;
-                        Estado = propuesta.Estado;
+                        var propuestaModel = new PropuestaModel
+                        {
+                            Titulo = propuestaDto.Titulo,
+                            Descripcion = propuestaDto.Descripcion,
+                            Estado = propuestaDto.Estado,
+                            Profesor1 = string.Empty,
+                            Profesor2 = string.Empty,
+                            Profesor3 = string.Empty
+                        };
+
+                        ListaDePropuestas.Add(propuestaModel);
                     }
                 }
 
                 if (profesores != null)
                 {
                     Profesores.Clear();
-                    foreach(var profesor in profesores)
+                    foreach (var profesor in profesores)
                     {
                         if (profesor.Rol.Equals(Constants.ROLE_REGISTRER_PROFESOR))
                         {
@@ -85,6 +93,7 @@ namespace WPF_CHEAT_os.ViewModel
                 MessageBox.Show($"Error al cargar las propuestas o los profesores: {ex.Message}");
             }
         }
+
 
         [RelayCommand]
         private async Task VerDetallesAsync(PropuestaDTO propuesta)
