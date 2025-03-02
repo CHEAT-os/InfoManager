@@ -9,7 +9,7 @@
         public const string LOGIN_PATH = "users/login";
         public const string USERS_PATH = "users";
         public const string REGISTER_PATH = "users/register";
-        public const string PROPUESTA_PATH = "propuesta";
+        public const string PROPUESTA_PATH = "Propuesta";
 
         public const string ERROR_TYC = "Debes aceptar los términos y condiciones";
         public const string ERROR_PASSWORDEQUALS = "Contraseñas distintas";

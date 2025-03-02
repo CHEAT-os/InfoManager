@@ -9,11 +9,11 @@ namespace WPF_CHEAT_os.DTO
 {
     public class RegistroDTO
     {
-        [JsonPropertyName("nombre")]
+        [JsonPropertyName("name")]
         public string Nombre { get; set; }
-        [JsonPropertyName("apellido")]
+        [JsonPropertyName("apellidos")]
         public string Apellido { get; set; }
-        [JsonPropertyName("Email")]
+        [JsonPropertyName("email")]
         public string Email { get; set; }
         [JsonPropertyName("password")]
         public string Password { get; set; }
