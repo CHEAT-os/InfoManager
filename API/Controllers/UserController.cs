@@ -23,23 +23,15 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,profesor")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
-            var userList = _userRepository.GetUsers();
-            var userListDTO = new List<UserDTO>();
-
-            foreach (var user in userList)
-            {
-                userListDTO.Add(_mapper.Map<UserDTO>(user));
-            }
-
-            return Ok(userListDTO);
+            var users = await _userRepository.GetUsers();
+            return Ok(users);
         }
-
 
         [AllowAnonymous]
         [HttpPost("register")]

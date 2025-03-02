@@ -8,6 +8,9 @@ namespace WPF_CHEAT_os.DTO
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
+
         [JsonPropertyName("titulo")]
         public string Titulo { get; set; }
 

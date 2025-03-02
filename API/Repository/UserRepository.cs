@@ -32,14 +32,24 @@ namespace API.Repository
             _mapper = mapper;
         }
 
-        public AppUser GetUser(string id)
+        public async Task<ICollection<UserDTO>> GetUsers()
         {
-            return _context.AppUsers.FirstOrDefault(user => user.Id == id);
-        }
+            var users = _context.AppUsers.OrderBy(user => user.Email).ToList();
+            var userDtos = new List<UserDTO>();
 
-        public ICollection<AppUser> GetUsers()
-        {
-            return _context.AppUsers.OrderBy(user => user.Email).ToList();
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userDtos.Add(new UserDTO
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                    Rol = roles.FirstOrDefault()
+                });
+            }
+
+            return userDtos;
         }
 
         public bool IsUniqueUser(string email)

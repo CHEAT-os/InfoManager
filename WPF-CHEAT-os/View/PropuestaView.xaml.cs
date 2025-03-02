@@ -1,4 +1,6 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Input;
+using WPF_CHEAT_os.ViewModel;
 
 namespace WPF_CHEAT_os.View
 {
