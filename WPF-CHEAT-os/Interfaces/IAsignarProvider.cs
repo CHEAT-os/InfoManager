@@ -9,8 +9,8 @@ namespace WPF_CHEAT_os.Interfaces
 {
     public interface IAsignarProvider
     {
-        List<AlumnoDTO> ListaClean(List<AlumnoDTO> listaAprobados, List<AlumnoDTO> ListaAsignada);
-        List<AlumnoDTO> AlumnosAsignados(List<AlumnoDTO> listaAprobados, int maxAlumnos);
+        List<UsuarioDTO> ListaClean(List<UsuarioDTO> listaAprobados, List<UsuarioDTO> ListaAsignada);
+        List<UsuarioDTO> AlumnosAsignados(List<UsuarioDTO> listaAprobados, int maxAlumnos);
         int TutorPuedeLlevar(int horas, int alumnos);
     }
 }

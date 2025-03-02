@@ -18,6 +18,6 @@
 
         public const string ROLE_REGISTRER_ADMIN = "admin";
         public const string ROLE_REGISTRER_PROFESOR = "profesor";
-        public const string ROLE_REGISTRER_USER = "user";
+        public const string ROLE_REGISTRER_ALUMNO = "alumno";
     }
 }

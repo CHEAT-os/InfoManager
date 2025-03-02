@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using WPF_CHEAT_os.DTO;
 using WPF_CHEAT_os.Interfaces;
+using WPF_CHEAT_os.Utils;
 
 namespace WPF_CHEAT_os.Services
 {
     public class AsignarService : IAsignarProvider
     {
         private const int HORAS_PROFES_TOTALES = 540;
+
         public AsignarService() { }
 
         // Número de alumnos entre número de horas totales y multiplicado por la hora de cada profesor
@@ -18,28 +22,34 @@ namespace WPF_CHEAT_os.Services
             return alumnosPermitidos;
         }
 
-        // Asigna alumnos de manera aleatoria
-        public List<AlumnoDTO> AlumnosAsignados(List<AlumnoDTO> listaAprobados, int maxAlumnos)
+        // Asigna alumnos de manera aleatoria asegurándose de que solo sean alumnos
+        public List<UsuarioDTO> AlumnosAsignados(List<UsuarioDTO> listaAprobados, int maxAlumnos)
         {
+            if (listaAprobados == null || listaAprobados.Count == 0) return new List<UsuarioDTO>();
+
+            // Filtrar solo los usuarios que tienen el rol de "Alumno"
+            List<UsuarioDTO> soloAlumnos = listaAprobados.Where(u => u.Rol == Constants.ROLE_REGISTRER_ALUMNO).ToList();
+
             // Mezclar la lista de alumnos aleatoriamente
             Random r = new Random();
-            List<AlumnoDTO> listaMezclada = listaAprobados.OrderBy(x => r.Next()).ToList();
+            List<UsuarioDTO> listaMezclada = soloAlumnos.OrderBy(x => r.Next()).ToList();
 
             // Tomar solo el número máximo de alumnos permitido
             return listaMezclada.Take(maxAlumnos).ToList();
         }
 
         // Metodo para eliminar de la lista de aprobados los alumnos que ya estan asignados a otro profesor
-        public List<AlumnoDTO> ListaClean(List<AlumnoDTO> listaAprobados, List<AlumnoDTO> ListaAsignada)
+        public List<UsuarioDTO> ListaClean(List<UsuarioDTO> listaAprobados, List<UsuarioDTO> ListaAsignada)
         {
-            foreach (var item in ListaAsignada)
-            {
-                if (listaAprobados.Contains(item))
-                {
-                    listaAprobados.Remove(item);
-                }
-            }
-            return listaAprobados;
+            if (listaAprobados == null || ListaAsignada == null) return new List<UsuarioDTO>();
+
+            // Filtrar solo los alumnos de la lista de aprobados
+            List<UsuarioDTO> soloAlumnosAprobados = listaAprobados.Where(u => u.Rol == Constants.ROLE_REGISTRER_ALUMNO).ToList();
+
+            // Remover de la lista de aprobados los alumnos que ya han sido asignados
+            soloAlumnosAprobados.RemoveAll(alumno => ListaAsignada.Any(asignado => asignado.Id == alumno.Id));
+
+            return soloAlumnosAprobados;
         }
     }
 }
