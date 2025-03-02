@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using WPF_CHEAT_os.Utils;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WPF_CHEAT_os.ViewModel
 {
@@ -26,6 +27,15 @@ namespace WPF_CHEAT_os.ViewModel
 
         [ObservableProperty]
         private PropuestaDTO selectedPropuesta;
+
+        [ObservableProperty]
+        private string _Nombre;
+
+        [ObservableProperty]
+        private string _Descripcion;
+
+        [ObservableProperty]
+        private string _Estado;
 
         public PropuestaViewModel(IPropuestaProvider propuestaProvider, IServiceProvider serviceProvider, 
                                     IUsuarioProvider usuarioProvider, IAsignarProvider asignarProvider)
@@ -52,6 +62,9 @@ namespace WPF_CHEAT_os.ViewModel
                     foreach (var propuesta in propuestas)
                     {
                         ListaDePropuestas.Add(propuesta);
+                        Nombre = propuesta.Titulo;
+                        Descripcion = propuesta.Descripcion;
+                        Estado = propuesta.Estado;
                     }
                 }
 
