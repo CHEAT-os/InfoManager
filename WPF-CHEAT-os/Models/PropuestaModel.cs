@@ -15,5 +15,7 @@ namespace WPF_CHEAT_os.Models
         public ProfesorModel Profesor2 { get; set; }
         public ProfesorModel Profesor3 { get; set; }
 
+        // Nueva propiedad para almacenar los usuarios asociados a la propuesta
+        public List<UsuarioDTO> Users { get; set; } = new List<UsuarioDTO>();
     }
 }
