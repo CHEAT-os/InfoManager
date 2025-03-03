@@ -12,6 +12,11 @@
               mc:Ignorable="d" 
               Background="White"
               d:DesignHeight="500" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type viewmodel:VerPropuestaViewModel}">
+            <view:VerPropuestaView/>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <Grid>
         <Button Content="Autocompletar"
@@ -40,65 +45,39 @@
                 <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="200" />
                 <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
 
-                <!-- Profesor 1 -->
                 <DataGridTemplateColumn Header="Profesor 1" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Profesor1.Nombre}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox ItemsSource="{Binding DataContext.Profesores, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                              SelectedItem="{Binding Profesor1, Mode=TwoWay}"
-                              DisplayMemberPath="Nombre"
-                              Width="140"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
 
-                <!-- Profesor 2 -->
                 <DataGridTemplateColumn Header="Profesor 2" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Profesor2.Nombre}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox ItemsSource="{Binding DataContext.Profesores, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                              SelectedItem="{Binding Profesor2, Mode=TwoWay}"
-                              DisplayMemberPath="Nombre"
-                              Width="140"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
 
-                <!-- Profesor 3 -->
                 <DataGridTemplateColumn Header="Profesor 3" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Profesor3.Nombre}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox ItemsSource="{Binding DataContext.Profesores, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                              SelectedItem="{Binding Profesor3, Mode=TwoWay}"
-                              DisplayMemberPath="Nombre"
-                              Width="140"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
 
-            <DataGrid.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick"
-                      Command="{Binding VerDetallesCommand}"
-                      CommandParameter="{Binding SelectedPropuesta}"/>
-            </DataGrid.InputBindings>
-
         </DataGrid>
+
+        <Button Content="Abrir"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        Margin="10"
+        Padding="5"
+        Command="{Binding VerViewCommand}"/>
 
     </Grid>
 </UserControl>
