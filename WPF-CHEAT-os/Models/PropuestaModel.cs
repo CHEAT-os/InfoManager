@@ -6,6 +6,7 @@ namespace WPF_CHEAT_os.Models
 {
     public class PropuestaModel
     {
+        public int Id { get; set; }
         public string Titulo { get; set; }
         public string Email { get; set; }
         public string Descripcion { get; set; }

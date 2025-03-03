@@ -1,32 +1,40 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
+using System.Reflection;
 using System.Windows.Data;
 using WPF_CHEAT_os.Utils;
 
-namespace WPF_CHEAT_os.Converter
+public class EnumToStringConverter : IValueConverter
 {
-    public class EnumToStringConverter : IValueConverter
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        if (value is Enum enumValue)
         {
-          
-            if (value is EstadoPropuesta estado)
-            {
-                return estado.ToString();
-            }
-            return null;
+            return GetEnumDescription(enumValue);
         }
+        return null;
+    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is string str && !string.IsNullOrWhiteSpace(str))
         {
-          
-            if (value is string str)
+            foreach (var field in targetType.GetFields())
             {
-                if (Enum.TryParse<EstadoPropuesta>(str, out var estado))
+                var attribute = field.GetCustomAttribute<DescriptionAttribute>();
+                if (attribute?.Description == str || field.Name == str)
                 {
-                    return estado;
+                    return Enum.Parse(targetType, field.Name);
                 }
             }
-            return null;
         }
+        return EstadoPropuesta.Enviada; // Valor por defecto
+    }
+
+    private static string GetEnumDescription(Enum value)
+    {
+        var field = value.GetType().GetField(value.ToString());
+        var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
+        return attribute?.Description ?? value.ToString();
     }
 }

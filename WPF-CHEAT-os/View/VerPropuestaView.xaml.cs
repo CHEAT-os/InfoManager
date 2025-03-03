@@ -18,7 +18,7 @@ namespace WPF_CHEAT_os.View
     /// <summary>
     /// Lógica de interacción para VerPropuestaView.xaml
     /// </summary>
-    public partial class VerPropuestaView : UserControl
+    public partial class VerPropuestaView : Window
     {
         public VerPropuestaView()
         {

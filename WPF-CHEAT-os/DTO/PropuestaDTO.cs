@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using WPF_CHEAT_os.Models;
 
 namespace WPF_CHEAT_os.DTO
 {
@@ -24,6 +25,6 @@ namespace WPF_CHEAT_os.DTO
         public string Estado { get; set; }
 
         [JsonPropertyName("users")]
-        public ICollection<UsuarioDTO> Users { get; } = [];
+        public ICollection<ProfesorModel> Users { get; set; }
     }
 }
