@@ -14,5 +14,7 @@ namespace API.Models.DTOs.Propuesta
         public string Tipo { get; set; }
         [Required(ErrorMessage = "Field required: Estado")]
         public string Estado { get; set; }
+        [Required(ErrorMessage = "Field required: UserIds")]
+        public List<string>? UserIds { get; set; }
     }
 }

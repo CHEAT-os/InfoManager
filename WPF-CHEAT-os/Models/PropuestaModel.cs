@@ -1,6 +1,4 @@
-﻿
-using WPF_CHEAT_os.DTO;
-using WPF_CHEAT_os.Utils;
+﻿using System.Collections.Generic;
 
 namespace WPF_CHEAT_os.Models
 {
@@ -11,11 +9,9 @@ namespace WPF_CHEAT_os.Models
         public string Email { get; set; }
         public string Descripcion { get; set; }
         public string Estado { get; set; }
-        public ProfesorModel Profesor1 { get; set; }
-        public ProfesorModel Profesor2 { get; set; }
-        public ProfesorModel Profesor3 { get; set; }
-
-        // Nueva propiedad para almacenar los usuarios asociados a la propuesta
-        public List<UsuarioDTO> Users { get; set; } = new List<UsuarioDTO>();
+        public string Profesor1 { get; set; }
+        public string Profesor2 { get; set; }
+        public string Profesor3 { get; set; } 
+        public List<string> UserIds { get; set; } = new List<string>();
     }
 }

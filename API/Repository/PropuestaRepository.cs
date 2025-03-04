@@ -18,16 +18,6 @@ namespace API.Repository
             _cache = cache;
         }
 
-        public async Task<bool> Save()
-        {
-            var result = await _context.SaveChangesAsync() >= 0;
-            if (result)
-            {
-                ClearCache();
-            }
-            return result;
-        }
-
         public void ClearCache()
         {
             _cache.Remove(PropuestaCacheKey);
@@ -71,9 +61,60 @@ namespace API.Repository
 
         public async Task<bool> UpdateAsync(PropuestaEntity propuesta)
         {
+            // Validar que el objeto propuesta no sea nulo
+            if (propuesta == null)
+            {
+                throw new ArgumentNullException(nameof(propuesta), "La propuesta no puede ser nula.");
+            }
 
-            _context.Update(propuesta);
+            // Buscar la propuesta existente en la base de datos
+            var propuestaExistente = await _context.Propuesta
+                .Include(p => p.Users) // Incluir los usuarios para actualizar las relaciones
+                .FirstOrDefaultAsync(p => p.Id == propuesta.Id);
+
+            // Si no se encuentra la propuesta, retornar false
+            if (propuestaExistente == null)
+            {
+                return false;
+            }
+
+            // Actualizar solo los campos permitidos
+            propuestaExistente.Email = propuesta.Email;
+            propuestaExistente.Titulo = propuesta.Titulo;
+            propuestaExistente.Descripcion = propuesta.Descripcion;
+            propuestaExistente.Tipo = propuesta.Tipo;
+            propuestaExistente.Estado = propuesta.Estado;
+
+            // Actualizar la relación con los usuarios
+            if (propuesta.Users != null)
+            {
+                // Limpiar la lista actual de usuarios
+                propuestaExistente.Users.Clear();
+
+                // Añadir los nuevos usuarios
+                foreach (var user in propuesta.Users)
+                {
+                    propuestaExistente.Users.Add(user);
+                }
+            }
+
+            // Guardar los cambios en la base de datos
             return await Save();
+        }
+        private async Task<bool> Save()
+        {
+            try
+            {
+                // Guardar los cambios y retornar true si se guardó correctamente
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción (puedes registrar el error en un log)
+                // Por ejemplo: _logger.LogError(ex, "Error al guardar los cambios.");
+                return false;
+            }
         }
 
         public async Task<bool> DeleteAsync(int id)

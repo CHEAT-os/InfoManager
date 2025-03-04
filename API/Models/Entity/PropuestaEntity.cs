@@ -13,6 +13,7 @@ namespace API.Models.Entity
         public string Descripcion { get; set; }
         public string Tipo { get; set; }
         public string Estado { get; set; }
-        public ICollection<User> Users { get; } = [];
+        public ICollection<User> Users { get; set; } = new List<User>();
+
     }
 }

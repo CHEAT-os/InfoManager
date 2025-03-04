@@ -30,19 +30,13 @@ namespace WPF_CHEAT_os.ViewModel
         [ObservableProperty]
         private PropuestaModel? selectedPropuesta;
 
-        private readonly VerPropuestaViewModel _viewModel;
-
-        [ObservableProperty]
-        private ViewModelBase? selectedViewModel;
-
         public PropuestaViewModel(IPropuestaProvider propuestaProvider, IServiceProvider serviceProvider,
-                                    IUsuarioProvider usuarioProvider, IAsignarProvider asignarProvider, VerPropuestaViewModel viewModel)
+                                    IUsuarioProvider usuarioProvider, IAsignarProvider asignarProvider)
         {
             _propuestaProvider = propuestaProvider;
             _serviceProvider = serviceProvider;
             _usuarioService = usuarioProvider;
             _asignarProvider = asignarProvider;
-            _viewModel = viewModel;
         }
 
         public override async Task LoadAsync()
@@ -54,7 +48,7 @@ namespace WPF_CHEAT_os.ViewModel
                 ListaDePropuestas.Clear();
                 foreach (var propuestaDto in propuestas)
                 {
-                    var usersList = propuestaDto.Users?.ToList() ?? new List<ProfesorModel>();
+                    var userIds = propuestaDto.UserIds?.ToList() ?? new List<string>();
 
                     var propuestaModel = new PropuestaModel
                     {
@@ -63,14 +57,13 @@ namespace WPF_CHEAT_os.ViewModel
                         Email = propuestaDto.Email,
                         Descripcion = propuestaDto.Descripcion,
                         Estado = propuestaDto.Estado,
-                        Profesor1 = usersList.Count > 0 ? new ProfesorModel { Nombre = usersList[0].Nombre } : new ProfesorModel(),
-                        Profesor2 = usersList.Count > 1 ? new ProfesorModel { Nombre = usersList[1].Nombre } : new ProfesorModel(),
-                        Profesor3 = usersList.Count > 2 ? new ProfesorModel { Nombre = usersList[2].Nombre } : new ProfesorModel()
+                        Profesor1 = userIds.Count > 0 ? userIds[0] : null, 
+                        Profesor2 = userIds.Count > 1 ? userIds[1] : null, 
+                        Profesor3 = userIds.Count > 2 ? userIds[2] : null  
                     };
 
                     ListaDePropuestas.Add(propuestaModel);
                 }
-
 
                 Profesores.Clear();
                 foreach (var profesor in profesoresData)
@@ -92,10 +85,7 @@ namespace WPF_CHEAT_os.ViewModel
         {
             if (SelectedPropuesta == null) return;
 
-            var propuestaService = new PropuestaService(new HttpsJsonClientService<PropuestaDTO>());
-            var usuarioService = new UsuarioService(new HttpsJsonClientService<UsuarioDTO>(), new HttpsJsonClientService<GetUsuarioDTO>());
-
-            var viewModel = new VerPropuestaViewModel(propuestaService, usuarioService);
+            var viewModel = _serviceProvider.GetRequiredService<VerPropuestaViewModel>();
             await viewModel.SetIdObjeto(SelectedPropuesta.Id);
 
             var view = new VerPropuestaView { DataContext = viewModel };
@@ -109,7 +99,6 @@ namespace WPF_CHEAT_os.ViewModel
         {
             try
             {
-                // Obtener todos los usuarios
                 var usuarios = await _usuarioService.GetUsuarioDTOAsync();
 
                 if (usuarios == null || !usuarios.Any())
@@ -118,10 +107,9 @@ namespace WPF_CHEAT_os.ViewModel
                     return;
                 }
 
-                // Obtener el ID del curso desde los usuarios relacionados con la propuesta
                 int? cursoId = usuarios
                     .SelectMany(u => u.Cursos)
-                    .Where(c => SelectedPropuesta.Users.Any(user => user.Cursos.Any(uc => uc.Id == c.Id)))
+                    .Where(c => SelectedPropuesta.UserIds.Any(userId => usuarios.Any(u => u.Id.Equals(userId) && u.Cursos.Any(uc => uc.Id == c.Id))))
                     .Select(c => c.Id)
                     .FirstOrDefault();
 
@@ -131,14 +119,12 @@ namespace WPF_CHEAT_os.ViewModel
                     return;
                 }
 
-                // Filtrar alumnos (solo tienen un curso)
                 var alumnos = usuarios
                     .Where(u => u.Rol.Equals(Constants.ROLE_REGISTRER_ALUMNO, StringComparison.OrdinalIgnoreCase) &&
                                 u.Cursos.Count == 1 &&
                                 u.Cursos.First().Id == cursoId)
                     .ToList();
 
-                // Filtrar profesores (pueden tener varios cursos)
                 var profesores = usuarios
                     .Where(u => u.Rol.Equals(Constants.ROLE_REGISTRER_PROFESOR, StringComparison.OrdinalIgnoreCase) &&
                                 u.Cursos.Any(c => c.Id == cursoId))
@@ -156,14 +142,8 @@ namespace WPF_CHEAT_os.ViewModel
                     return;
                 }
 
-                // Determinar cuántos alumnos puede llevar cada profesor
                 int maxAlumnosPorProfesor = _asignarProvider.TutorPuedeLlevar(108, alumnos.Count);
-                // 540 / 5 = 108, no tenemos como saber hora de cada profe, se al principio de forma equitativa
-
-                // Asignar alumnos de forma aleatoria
                 var listaAsignada = _asignarProvider.AlumnosAsignados(alumnos, maxAlumnosPorProfesor);
-
-                // Limpiar la lista de alumnos aprobados
                 var alumnosRestantes = _asignarProvider.ListaClean(alumnos, listaAsignada);
 
                 MessageBox.Show($"Asignación completada: {listaAsignada.Count} alumnos asignados.");

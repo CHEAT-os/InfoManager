@@ -2,7 +2,8 @@
 {
     public class CreateAsignaturaDTO
     {
-        public string CursoId { get; set; }
+        public int CursoId { get; set; }
         public string Nombre { get; set; }
+        public int Horas { get; set; }
     }
 }

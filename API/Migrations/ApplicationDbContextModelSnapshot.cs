@@ -103,6 +103,9 @@ namespace API.Migrations
                     b.Property<int>("CursoId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Horas")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

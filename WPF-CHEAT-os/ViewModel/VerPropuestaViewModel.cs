@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using WPF_CHEAT_os.DTO;
@@ -30,9 +31,6 @@ namespace WPF_CHEAT_os.ViewModel
         private PropuestaDTO? propuesta;
 
         [ObservableProperty]
-        private EstadoPropuesta estadoSeleccionado;
-
-        [ObservableProperty]
         private ObservableCollection<ProfesorModel> profesores = new();
 
         public VerPropuestaViewModel(IPropuestaProvider propuestaProvider, IUsuarioProvider usuarioService)
@@ -45,12 +43,17 @@ namespace WPF_CHEAT_os.ViewModel
         {
             await CargarPropuesta(id.ToString());
             await CargarProfesores();
+            AsignarProfesores();
+        }
 
-            if (Propuesta?.Users != null)
+        private void AsignarProfesores()
+        {
+            if (Propuesta?.UserIds != null && Propuesta.UserIds.Any())
             {
-                Profesor1 = Propuesta.Users.ElementAtOrDefault(0);
-                Profesor2 = Propuesta.Users.ElementAtOrDefault(1);
-                Profesor3 = Propuesta.Users.ElementAtOrDefault(2);
+                var profesoresSeleccionados = Profesores.Where(p => Propuesta.UserIds.Contains(p.Id)).ToList();
+                Profesor1 = profesoresSeleccionados.ElementAtOrDefault(0);
+                Profesor2 = profesoresSeleccionados.ElementAtOrDefault(1);
+                Profesor3 = profesoresSeleccionados.ElementAtOrDefault(2);
             }
             else
             {
@@ -64,7 +67,8 @@ namespace WPF_CHEAT_os.ViewModel
         private async Task Aceptar()
         {
             if (Propuesta == null) return;
-            propuesta.Estado = "Aceptada";
+            Propuesta.Estado = "Aceptada";
+            Propuesta.UserIds ??= new List<string>();
             await GuardarYNotificar("La propuesta ha sido marcada como Aceptada.");
         }
 
@@ -72,7 +76,8 @@ namespace WPF_CHEAT_os.ViewModel
         private async Task Rechazar()
         {
             if (Propuesta == null) return;
-            propuesta.Estado = "Rechazada";
+            Propuesta.Estado = "Rechazada";
+            Propuesta.UserIds ??= new List<string>();
             await GuardarYNotificar("La propuesta ha sido marcada como Rechazada.");
         }
 
@@ -80,7 +85,8 @@ namespace WPF_CHEAT_os.ViewModel
         private async Task RequerirAmpliacion()
         {
             if (Propuesta == null) return;
-            propuesta.Estado = "Requiere Ampliacion";
+            Propuesta.Estado = "Requiere Ampliación";
+            Propuesta.UserIds ??= new List<string>();
             await GuardarYNotificar("La propuesta ha sido marcada como Requiere Ampliación.");
         }
 
@@ -89,26 +95,40 @@ namespace WPF_CHEAT_os.ViewModel
         {
             if (Propuesta == null) return;
 
-            // Convertir a List<ProfesorModel> si es necesario
-            if (Propuesta.Users == null || !(Propuesta.Users is List<ProfesorModel>))
+            // Obtener los profesores seleccionados
+            var seleccionados = new[] { Profesor1, Profesor2, Profesor3 }
+                                .Where(p => p != null)
+                                .Distinct()
+                                .ToList();
+
+            // Verificar si hay duplicados
+            if (seleccionados.Count < new[] { Profesor1, Profesor2, Profesor3 }.Count(p => p != null))
             {
-                Propuesta.Users = new List<ProfesorModel> { null, null, null };
+                MessageBox.Show("No puedes seleccionar el mismo profesor más de una vez.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
 
-            var usersList = (List<ProfesorModel>)Propuesta.Users;
+            // Actualizar UserIds con los IDs de los profesores seleccionados
+            Propuesta.UserIds = seleccionados.Select(p => p!.Id).ToList();
 
-            // Actualizar solo si hay cambios
-            if (!object.Equals(usersList[0], Profesor1)) usersList[0] = Profesor1;
-            if (!object.Equals(usersList[1], Profesor2)) usersList[1] = Profesor2;
-            if (!object.Equals(usersList[2], Profesor3)) usersList[2] = Profesor3;
+            // Asegurar que la lista no es null
+            Propuesta.UserIds ??= new List<string>();
 
             await GuardarYNotificar("Propuesta actualizada con éxito.");
         }
 
+
         private async Task GuardarYNotificar(string mensaje)
         {
-            await _propuestaProvider.UpdateAsync(Propuesta);
-            MessageBox.Show(mensaje, "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                await _propuestaProvider.UpdateAsync(Propuesta);
+                MessageBox.Show(mensaje, "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public async Task CargarPropuesta(string id)
@@ -119,7 +139,7 @@ namespace WPF_CHEAT_os.ViewModel
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar la propuesta: {ex.Message}");
+                MessageBox.Show($"Error al cargar la propuesta: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -127,26 +147,31 @@ namespace WPF_CHEAT_os.ViewModel
         {
             try
             {
-                var profesoresData = await _usuarioService.GetGetUsuarioDTOAsync();
+                // Obtener los datos de los profesores
+                var profesoresData = await _usuarioService.GetGetUsuarioDTOAsync() ?? new List<GetUsuarioDTO>();
 
+                // Limpiar la lista actual de profesores
                 Profesores.Clear();
-                foreach (var profesor in profesoresData)
+
+                // Recorrer los profesores y agregarlos a la lista
+                foreach (var profesor in profesoresData.Where(p => p != null && p.Rol == Constants.ROLE_REGISTRER_PROFESOR))
                 {
-                    if (profesor.Rol.Equals(Constants.ROLE_REGISTRER_PROFESOR))
+                    // Validar si el ID es nulo o vacío
+                    if (string.IsNullOrEmpty(profesor.Id))
                     {
-                        Profesores.Add(new ProfesorModel { Nombre = profesor.Name });
+                        MessageBox.Show($"Error: El ID del profesor '{profesor.Name}' es nulo o vacío.", "Error de ID", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        continue; // Saltar al siguiente profesor
                     }
+
+                    // Agregar el profesor a la lista
+                    Profesores.Add(new ProfesorModel { Id = profesor.Id, Nombre = profesor.Name });
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar los profesores: {ex.Message}");
+                // Mostrar un mensaje de error si ocurre una excepción
+                MessageBox.Show($"Error al cargar los profesores: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        public override Task LoadAsync()
-        {
-            return base.LoadAsync();
         }
     }
 }

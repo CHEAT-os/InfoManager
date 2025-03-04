@@ -241,5 +241,85 @@ namespace WPF_CHEAT_os.Services
             }
             return default;
         }
+
+        public async Task<T?> PatchAsync(string path, T data)
+        {
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    // Agregar encabezado Authorization
+                    httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
+
+                    // Serializar solo los datos que se desean actualizar
+                    string jsonContent = JsonSerializer.Serialize(data,
+                        new JsonSerializerOptions
+                        {
+                            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+                            WriteIndented = true
+                        });
+
+                    // Crear el contenido HTTP con el tipo adecuado
+                    var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                    // Crear solicitud HTTP PATCH manualmente
+                    HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{Constants.BASE_URL}{path}")
+                    {
+                        Content = content
+                    };
+
+                    HttpResponseMessage response = await httpClient.SendAsync(request);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        await Authenticate(path, httpClient, response);
+                        response = await httpClient.SendAsync(request);
+                    }
+
+                    // Verificar si la respuesta es exitosa
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        return JsonSerializer.Deserialize<T?>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error en la respuesta PATCH: {response.StatusCode}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en la solicitud PATCH: {ex.Message}");
+            }
+            return default;
+        }
+
+        public async Task<bool> DeleteAsync(string path, string id)
+        {
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
+
+                    HttpResponseMessage response = await httpClient.DeleteAsync($"{Constants.BASE_URL}{path}/{id}");
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        await Authenticate(path, httpClient, response);
+                        response = await httpClient.DeleteAsync($"{Constants.BASE_URL}{path}/{id}");
+                    }
+
+                    return response.IsSuccessStatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en la solicitud DELETE: {ex.Message}");
+            }
+            return false;
+        }
+
     }
 }

@@ -57,7 +57,8 @@ export class FormularioComponent implements OnInit {
       titulo: this.applyForm.value.NombreProyecto ?? '',
       descripcion: this.applyForm.value.descripcion ?? '',
       tipo: this.applyForm.value.tipoProyecto ?? '',
-      estado: 'Enviada'
+      estado: 'Enviada',
+      userIds: []
     };
   
     try {

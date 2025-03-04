@@ -4,4 +4,5 @@ export interface PropuestaModel {
     descripcion: string;
     tipo: string;
     estado: string;
+    userIds: string[];
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250302163847_initial")]
+    [Migration("20250304113628_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -104,6 +104,9 @@ namespace API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CursoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Horas")
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
