@@ -23,6 +23,16 @@ namespace API.Repository
             _cache.Remove(PropuestaCacheKey);
         }
 
+        public async Task<bool> Save()
+        {
+            var result = await _context.SaveChangesAsync() >= 0;
+            if (result)
+            {
+                ClearCache();
+            }
+            return result;
+        }
+
         public async Task<ICollection<PropuestaEntity>> GetAllAsync()
         {
             if (_cache.TryGetValue(PropuestaCacheKey, out ICollection<PropuestaEntity> propuestasCached))
@@ -98,23 +108,7 @@ namespace API.Repository
                 }
             }
 
-            // Guardar los cambios en la base de datos
             return await Save();
-        }
-        private async Task<bool> Save()
-        {
-            try
-            {
-                // Guardar los cambios y retornar true si se guardó correctamente
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // Manejar la excepción (puedes registrar el error en un log)
-                // Por ejemplo: _logger.LogError(ex, "Error al guardar los cambios.");
-                return false;
-            }
         }
 
         public async Task<bool> DeleteAsync(int id)
