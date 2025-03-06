@@ -7,7 +7,7 @@
 
         public const string BASE_URL = "https://localhost:7000/api/";
         public const string LOGIN_PATH = "users/login";
-        public const string USERS_PATH = "users";
+        public const string USERS_PATH = "UserPractico";
         public const string REGISTER_PATH = "users/register";
         public const string PROPUESTA_PATH = "Propuesta";
 

@@ -21,7 +21,7 @@ namespace WPF_CHEAT_os.ViewModel
         private ObservableCollection<UsuariosGridModel> _ListaProfesores;
 
         [ObservableProperty]
-        private GetUsuarioDTO _SelectedUsuario;
+        private UsuarioDTO _SelectedUsuario;
 
         private IUsuarioProvider _UsuarioService;
 
@@ -44,7 +44,7 @@ namespace WPF_CHEAT_os.ViewModel
         }
         public override async Task LoadAsync()
         {
-            var usuarios = await _UsuarioService.GetGetUsuarioDTOAsync();
+            var usuarios = await _UsuarioService.GetUsuarioDTOAsync();
 
             ListaAlumnos.Clear();
             ListaProfesores.Clear();

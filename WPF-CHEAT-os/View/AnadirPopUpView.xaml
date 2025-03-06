@@ -43,10 +43,10 @@
             <StackPanel>
                 <Label Content="Rol" />
                 <ComboBox x:Name="RoleComboBox" Width="300" Height="30" 
-                      SelectedItem="{Binding Rol}" Margin="0,5">
+                      SelectedValue="{Binding Rol}" Margin="0,5" SelectedValuePath="Content">
                     <ComboBox.Items>
-                        <ComboBoxItem Content="profesor"/>
-                        <ComboBoxItem Content="alumno" />
+                        <ComboBoxItem x:Name="profesor" Content="profesor"/>
+                        <ComboBoxItem x:Name="alumno" Content="alumno" />
                     </ComboBox.Items>
                 </ComboBox>
             </StackPanel>

@@ -20,6 +20,7 @@ namespace WPF_CHEAT_os.ViewModel
         private readonly IServiceProvider _serviceProvider;
         private readonly IUsuarioProvider _usuarioService;
         private readonly IAsignarProvider _asignarProvider;
+       
 
         [ObservableProperty]
         private ObservableCollection<PropuestaModel> listaDePropuestas = new();
@@ -54,7 +55,7 @@ namespace WPF_CHEAT_os.ViewModel
             try
             {
                 var propuestas = await _propuestaProvider.GetAsync();
-                var profesoresData = await _usuarioService.GetGetUsuarioDTOAsync();
+                var profesoresData = await _usuarioService.GetUsuarioDTOAsync();
                 ListaDePropuestas.Clear();
                 foreach (var propuestaDto in propuestas)
                 {

@@ -4,6 +4,7 @@ using WPF_CHEAT_os.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WPF_CHEAT_os.Models;
 
 namespace WPF_CHEAT_os.Services
 {
@@ -21,12 +22,17 @@ namespace WPF_CHEAT_os.Services
             return await _httpsJsonClientProvider.GetByIdAsync($"{Constants.PROPUESTA_PATH}/{id}/usuarios", id);
         }
 
-        public async Task AddAsync(AsignarPropuestaDTO propuesta)
+        public async Task AddAsync(AsignarProfePropuestaModel propuesta)
         {
+            var asignarPropuestaDTO = new AsignarPropuestaDTO
+            {
+                PropuestaId = propuesta.PropuestaId,
+                UserId = propuesta.UserId
+            };
             try
             {
                 if (propuesta == null) return;
-                await _httpsJsonClientProvider.PostAsync($"{Constants.PROPUESTA_PATH}/asignarUsuario", propuesta);
+                await _httpsJsonClientProvider.PostAsync($"{Constants.PROPUESTA_PATH}/asignarUsuario", asignarPropuestaDTO);
             }
             catch (Exception ex)
             {

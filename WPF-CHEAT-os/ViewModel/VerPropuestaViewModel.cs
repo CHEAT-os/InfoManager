@@ -16,6 +16,9 @@ namespace WPF_CHEAT_os.ViewModel
     {
         private readonly IPropuestaProvider _propuestaProvider;
         private readonly IUsuarioProvider _usuarioService;
+        private int _idPropuesta;
+        public List<UsuarioDTO> usuarios =new List<UsuarioDTO>();
+        public List<UsuarioDTO> profes= new List<UsuarioDTO>();
 
         [ObservableProperty]
         private ProfesorModel? profesor1;
@@ -35,6 +38,7 @@ namespace WPF_CHEAT_os.ViewModel
         [ObservableProperty]
         private ObservableCollection<ProfesorModel> profesores = new();
 
+
         public VerPropuestaViewModel(IPropuestaProvider propuestaProvider, IUsuarioProvider usuarioService)
         {
             _propuestaProvider = propuestaProvider ?? throw new ArgumentNullException(nameof(propuestaProvider));
@@ -43,6 +47,7 @@ namespace WPF_CHEAT_os.ViewModel
 
         public async Task SetIdObjeto(int id)
         {
+            _idPropuesta = id;
             await CargarPropuesta(id.ToString());
             await CargarProfesores();
 
@@ -89,20 +94,26 @@ namespace WPF_CHEAT_os.ViewModel
         {
             if (Propuesta == null) return;
 
+            
             if (Propuesta.Users == null || !(Propuesta.Users is List<ProfesorModel>))
             {
-                Propuesta.Users = new List<ProfesorModel> { null, null, null };
+                
+                Propuesta.Users = new List<ProfesorModel> { new ProfesorModel(), new ProfesorModel(), new ProfesorModel() };
             }
 
             var usersList = (List<ProfesorModel>)Propuesta.Users;
 
-            // Actualizar solo si hay cambios
+            
+            if (Profesor1 != null && !object.Equals(usersList[0], Profesor1)) usersList[0] = Profesor1;
+            if (Profesor2 != null && !object.Equals(usersList[1], Profesor2)) usersList[1] = Profesor2;
+            if (Profesor3 != null && !object.Equals(usersList[2], Profesor3)) usersList[2] = Profesor3;
 
-            if (!object.Equals(usersList[0], Profesor1)) usersList[0] = Profesor1;
-            if (!object.Equals(usersList[1], Profesor2)) usersList[1] = Profesor2;
-            if (!object.Equals(usersList[2], Profesor3)) usersList[2] = Profesor3;
-
+            
             await GuardarYNotificar("Propuesta actualizada con éxito.");
+        
+        
+        
+        
         }
 
         private async Task GuardarYNotificar(string mensaje)
@@ -127,26 +138,36 @@ namespace WPF_CHEAT_os.ViewModel
         {
             try
             {
-                var profesoresData = await _usuarioService.GetGetUsuarioDTOAsync();
-
+                usuarios = (List<UsuarioDTO>)await _usuarioService.GetUsuarioDTOAsync();
                 Profesores.Clear();
-                foreach (var profesor in profesoresData)
+                foreach (var usuario in usuarios)
                 {
-                    if (profesor.Rol.Equals(Constants.ROLE_REGISTRER_PROFESOR))
+                    if (usuario.Rol.Equals(Constants.ROLE_REGISTRER_PROFESOR))
                     { 
-                        Profesores.Add(new ProfesorModel { Email = profesor.Email });
+                        Profesores.Add(new ProfesorModel { Email = usuario.Email });
+                        profes.Add(usuario);
+
+                        _propuestaProvider.AddRelationTeacher(new AsignarProfePropuestaModel
+                        {
+                            PropuestaId= _idPropuesta,
+                            UserId=usuario.Id
+                        });
                     }
                 }
+
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar los profesores: {ex.Message}");
             }
         }
+        
 
-        public override Task LoadAsync()
+        public async override Task LoadAsync()
         {
-            return base.LoadAsync();
+            
+            
         }
     }
 }

@@ -55,7 +55,7 @@ namespace WPF_CHEAT_os.ViewModel
             try
             {
                 RegistroDTO usuarioRegistrado = new RegistroDTO(
-                    Name, Apellidos, Email, Password, Rol
+                    Name, Apellidos, Email, Password, Rol.ToLower()
                 );
 
                 UserDTO user = await _httpJsonProvider.RegisterPostAsync(Constants.REGISTER_PATH, usuarioRegistrado);

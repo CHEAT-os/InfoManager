@@ -9,14 +9,14 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WPF_CHEAT_os.Models
 {
-    public class AsignarProfePorpuestaModel
+    public class AsignarProfePropuestaModel
     {
         public int UserId { get; set; }
         public int PropuestaId { get; set; }
 
-        internal static AsignarProfePorpuestaModel CreateModelFromDTO(AsignarPropuestaDTO asignar)
+        internal static AsignarProfePropuestaModel CreateModelFromDTO(AsignarPropuestaDTO asignar)
         {
-            return new AsignarProfePorpuestaModel
+            return new AsignarProfePropuestaModel
             {
                UserId = asignar.UserId,
                PropuestaId = asignar.PropuestaId,

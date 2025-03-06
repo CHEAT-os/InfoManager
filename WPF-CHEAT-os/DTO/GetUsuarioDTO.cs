@@ -10,7 +10,7 @@ namespace WPF_CHEAT_os.DTO
     public class GetUsuarioDTO
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
         [JsonPropertyName("name")]
         public string Name { get; set; }
         [JsonPropertyName("apellidos")]

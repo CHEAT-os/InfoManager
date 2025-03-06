@@ -4,6 +4,7 @@ using WPF_CHEAT_os.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WPF_CHEAT_os.Models;
 
 namespace WPF_CHEAT_os.Services
 {
@@ -53,7 +54,7 @@ namespace WPF_CHEAT_os.Services
                 Console.WriteLine(ex.Message);
             }
         }
-        public async Task AddRelationTeacher(AsignarPropuestaDTO propuestaUser)
+        public async Task AddRelationTeacher(AsignarProfePropuestaModel propuestaUser)
         {
             try
             {

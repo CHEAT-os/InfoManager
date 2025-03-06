@@ -46,19 +46,19 @@
 
                 <TextBlock Text="Profesor 1:" FontWeight="Bold"/>
                 <ComboBox ItemsSource="{Binding Profesores}"
-                          SelectedItem="{Binding Profesor1.Email}"
+                          SelectedItem="{Binding Profesor1, Mode=TwoWay}"
                           DisplayMemberPath="Email"
                           Width="200" Margin="0,5"/>
 
                 <TextBlock Text="Profesor 2:" FontWeight="Bold"/>
                 <ComboBox ItemsSource="{Binding Profesores}"
-                          SelectedItem="{Binding Profesor2.Email}"
+                          SelectedItem="{Binding Profesor2, Mode=TwoWay}"
                           DisplayMemberPath="Email"
                           Width="200" Margin="0,5"/>
 
                 <TextBlock Text="Profesor 3:" FontWeight="Bold"/>
                 <ComboBox ItemsSource="{Binding Profesores}"
-                          SelectedItem="{Binding Profesor3.Email}"
+                          SelectedItem="{Binding Profesor3, Mode=TwoWay}"
                           DisplayMemberPath="Email"
                           Width="200" Margin="0,5"/>
             </StackPanel>
