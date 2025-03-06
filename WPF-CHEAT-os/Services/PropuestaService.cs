@@ -10,7 +10,6 @@ namespace WPF_CHEAT_os.Services
     public class PropuestaService : IPropuestaProvider
     {
         private readonly IHttpsJsonClientProvider<PropuestaDTO> _httpsJsonClientProvider;
-        private readonly IAsignarTribunalProvider _asignarTribunalProvider;
 
         public PropuestaService(IHttpsJsonClientProvider<PropuestaDTO> httpsJsonClientProvider,IAsignarTribunalProvider asignarTribunalProvider)
         {
@@ -59,6 +58,19 @@ namespace WPF_CHEAT_os.Services
             {
                 if (propuestaUser == null) return;
                 await _asignarTribunalProvider.AddAsync(propuestaUser);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id)) return;
+                await _httpsJsonClientProvider.DeleteAsync(Constants.PROPUESTA_PATH, id);
             }
             catch (Exception ex)
             {

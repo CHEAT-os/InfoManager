@@ -109,6 +109,16 @@ namespace WPF_CHEAT_os.ViewModel
         }
 
         [RelayCommand]
+        private async Task Eliminar()
+        {
+            if (SelectedPropuesta != null)
+            {
+                await _propuestaProvider.DeleteAsync(SelectedPropuesta.Id.ToString());
+            }
+            LoadAsync();
+        }
+
+        [RelayCommand]
         private async Task Autocompletar()
         {
             try

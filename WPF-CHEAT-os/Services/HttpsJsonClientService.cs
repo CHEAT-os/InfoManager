@@ -235,14 +235,13 @@ namespace WPF_CHEAT_os.Services
                     }
                 }
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine($"Error en la solicitud PATCH: {ex.Message}");
             }
             return default;
         }
-        public async Task<bool> DeleteAsync(string path, int id)
+        public async Task<bool> DeleteAsync(string path, string id)
         {
             try
             {
@@ -250,9 +249,7 @@ namespace WPF_CHEAT_os.Services
                 {
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
 
-                    HttpResponseMessage response = await httpClient.DeleteAsync($"{Constants.BASE_URL}{path}{id}");
-                    Console.WriteLine($"Intentando eliminar: {Constants.BASE_URL}{path}/{id}");
-
+                    HttpResponseMessage response = await httpClient.DeleteAsync($"{Constants.BASE_URL}{path}/{id}");
 
                     if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {

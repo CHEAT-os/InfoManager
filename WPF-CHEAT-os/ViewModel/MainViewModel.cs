@@ -61,7 +61,8 @@ namespace WPF_CHEAT_os.ViewModel
             // Mostrar menú en vistas seleccionadas
             IsMenuVisible = SelectedViewModel is PrincipalViewModel
                  || SelectedViewModel is PropuestaViewModel
-                 || SelectedViewModel is VerPropuestaViewModel;
+                 || SelectedViewModel is VerPropuestaViewModel
+                 || SelectedViewModel is GestionViewModel;
         }
     }
 }

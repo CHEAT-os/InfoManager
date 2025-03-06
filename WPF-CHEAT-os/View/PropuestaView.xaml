@@ -19,25 +19,17 @@
     </UserControl.Resources>
 
     <Grid>
-        <Button Content="Autocompletar"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="10,10,0,0"
-                Padding="5"
-                Command="{Binding AutocompletarCommand}">
-        </Button>
-
         <TextBlock Text="Propuestas Enviadas por los Alumnos" FontSize="24" HorizontalAlignment="Center" Margin="0,20,0,0"/>
 
         <DataGrid x:Name="PropuestasDataGrid"
-          Margin="10,60,10,10"
-          AutoGenerateColumns="False"
-          CanUserAddRows="False"
-          CanUserDeleteRows="False"
-          IsReadOnly="False" 
-          ItemsSource="{Binding ListaDePropuestas}"
-          SelectionMode="Single"
-          SelectedItem="{Binding SelectedPropuesta, Mode=TwoWay}">
+                  Margin="10,60,10,60"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  IsReadOnly="False" 
+                  ItemsSource="{Binding ListaDePropuestas}"
+                  SelectionMode="Single"
+                  SelectedItem="{Binding SelectedPropuesta, Mode=TwoWay}">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="100"/>
@@ -73,15 +65,22 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>-->
             </DataGrid.Columns>
-
         </DataGrid>
 
-        <Button Content="Abrir"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Top"
-        Margin="10"
-        Padding="5"
-        Command="{Binding VerViewCommand}"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
+            <Button Content="Autocompletar"
+                    Padding="5" Background="Green" Foreground="White"
+                    Command="{Binding AutocompletarCommand}"/>
 
+            <Button Content="Abrir"
+                    Padding="5"
+                    Margin="10,0,10,0" Background="DeepSkyBlue" Foreground="White"
+                    Command="{Binding VerViewCommand}"/>
+
+            <Button Content="Eliminar"
+                    Padding="5"
+                    Background="Red" Foreground="White"
+                    Command="{Binding EliminarCommand}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

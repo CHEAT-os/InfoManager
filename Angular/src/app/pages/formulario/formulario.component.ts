@@ -26,8 +26,6 @@ export class FormularioComponent implements OnInit {
   errorMessage: string = '';
   userEmail: string = '';
   isViewEnabled: boolean = true; // Variable para controlar la habilitación de la vista
-  isProposalSent: boolean = false; // Para verificar si ya se ha enviado una propuesta
-  isProposalRequiereAmpliacion: boolean = false; // Para verificar si el estado es "Requiere Ampliación"
   fechaInicio: Date = new Date('2025-03-01'); // Fecha de inicio
   fechaFin: Date = new Date('2025-03-31');  // Fecha de fin
 
@@ -41,9 +39,6 @@ export class FormularioComponent implements OnInit {
 
     // Verificamos si la vista está habilitada
     this.checkVistaHabilitada();
-
-    // Verificamos el estado de la propuesta
-    this.checkEstadoPropuesta();
   }
 
   // Verificar si la vista está habilitada según las fechas
@@ -52,20 +47,6 @@ export class FormularioComponent implements OnInit {
     if (currentDate < this.fechaInicio || currentDate > this.fechaFin) {
       this.isViewEnabled = false;
     }
-  }
-
-  // Verificar el estado de las propuestas del usuario
-  checkEstadoPropuesta(): void {
-    this.propuestaService.getPropuestasPorEmail().then(propuestas => {
-      // Contamos las propuestas con el estado "Requiere Ampliación"
-      const propuesta = propuestas.find(p => p.email === this.userEmail && p.estado === 'Requiere Ampliacion');
-      
-      if (propuesta) {
-        this.isProposalRequiereAmpliacion = true; // Si encontramos una propuesta con estado "Requiere Ampliación"
-      } else {
-        this.isProposalSent = true; // Si la propuesta ya existe con otro estado, deshabilitamos el formulario
-      }
-    });
   }
 
   // Método para enviar la propuesta

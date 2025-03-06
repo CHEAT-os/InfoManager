@@ -79,7 +79,7 @@ export class PropuestaService {
     }
   }
 
-  async getPropuestas(): Promise<PropuestaGetModel[]> {
+  async getPropuestas(): Promise<PropuestaModel[]> {
     try {
       const response = await fetch(`${this.baseUrl_get}`, {
         method: 'GET',
