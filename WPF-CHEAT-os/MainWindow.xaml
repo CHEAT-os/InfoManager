@@ -24,6 +24,9 @@
         <DataTemplate DataType="{x:Type viewmodel:RegistroViewModel}">
             <view:RegistroView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:GestionViewModel}">
+            <view:GestionView/>
+        </DataTemplate>
 
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
         
@@ -51,7 +54,10 @@
             <MenuItem Header="_Propuesta" Foreground="Black"
                Command="{Binding SelectViewModelCommand}"
                CommandParameter="{Binding DataContext.PropuestaViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
-        </Menu>
+            <MenuItem Header="_Gestion" Foreground="Black"
+               Command="{Binding SelectViewModelCommand}"
+               CommandParameter="{Binding DataContext.GestionViewModel, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        </Menu> 
 
         <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}"/>
 

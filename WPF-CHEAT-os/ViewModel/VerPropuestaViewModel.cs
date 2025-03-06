@@ -89,7 +89,6 @@ namespace WPF_CHEAT_os.ViewModel
         {
             if (Propuesta == null) return;
 
-            // Convertir a List<ProfesorModel> si es necesario
             if (Propuesta.Users == null || !(Propuesta.Users is List<ProfesorModel>))
             {
                 Propuesta.Users = new List<ProfesorModel> { null, null, null };
