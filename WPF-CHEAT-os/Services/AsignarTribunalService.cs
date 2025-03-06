@@ -36,8 +36,8 @@ namespace WPF_CHEAT_os.Services
 
 
         public async Task DeleteAsync(AsignarPropuestaDTO propuesta)
-        {
-            await _httpsJsonClientProvider.DeleteAsync($"{Constants.PROPUESTA_PATH}/quitarUsuario",propuesta.Id);
+        {   
+            await _httpsJsonClientProvider.DeleteAsync($"{Constants.PROPUESTA_PATH}/quitarUsuario",propuesta.Id.ToString());
         }
     }
 

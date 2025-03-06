@@ -97,6 +97,7 @@ namespace WPF_CHEAT_os.ViewModel
             var usersList = (List<ProfesorModel>)Propuesta.Users;
 
             // Actualizar solo si hay cambios
+
             if (!object.Equals(usersList[0], Profesor1)) usersList[0] = Profesor1;
             if (!object.Equals(usersList[1], Profesor2)) usersList[1] = Profesor2;
             if (!object.Equals(usersList[2], Profesor3)) usersList[2] = Profesor3;
@@ -132,8 +133,8 @@ namespace WPF_CHEAT_os.ViewModel
                 foreach (var profesor in profesoresData)
                 {
                     if (profesor.Rol.Equals(Constants.ROLE_REGISTRER_PROFESOR))
-                    {
-                        Profesores.Add(new ProfesorModel { Nombre = profesor.Name });
+                    { 
+                        Profesores.Add(new ProfesorModel { Email = profesor.Email });
                     }
                 }
             }

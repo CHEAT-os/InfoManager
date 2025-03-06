@@ -10,6 +10,7 @@ namespace WPF_CHEAT_os.Services
     public class PropuestaService : IPropuestaProvider
     {
         private readonly IHttpsJsonClientProvider<PropuestaDTO> _httpsJsonClientProvider;
+        IAsignarTribunalProvider _asignarTribunalProvider;
 
         public PropuestaService(IHttpsJsonClientProvider<PropuestaDTO> httpsJsonClientProvider,IAsignarTribunalProvider asignarTribunalProvider)
         {
@@ -52,7 +53,7 @@ namespace WPF_CHEAT_os.Services
                 Console.WriteLine(ex.Message);
             }
         }
-        public async Task AddRelationUser(AsignarPropuestaDTO propuestaUser)
+        public async Task AddRelationTeacher(AsignarPropuestaDTO propuestaUser)
         {
             try
             {

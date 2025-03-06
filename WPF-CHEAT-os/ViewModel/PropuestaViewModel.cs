@@ -67,9 +67,9 @@ namespace WPF_CHEAT_os.ViewModel
                         Email = propuestaDto.Email,
                         Descripcion = propuestaDto.Descripcion,
                         Estado = propuestaDto.Estado,
-                        Profesor1 = usersList.Count > 0 ? new ProfesorModel { Nombre = usersList[0].Nombre } : new ProfesorModel(),
-                        Profesor2 = usersList.Count > 1 ? new ProfesorModel { Nombre = usersList[1].Nombre } : new ProfesorModel(),
-                        Profesor3 = usersList.Count > 2 ? new ProfesorModel { Nombre = usersList[2].Nombre } : new ProfesorModel()
+                        Profesor1 = usersList.Count > 0 ? new ProfesorModel { Email = usersList[0].Email } : new ProfesorModel(),
+                        Profesor2 = usersList.Count > 1 ? new ProfesorModel { Email = usersList[1].Email } : new ProfesorModel(),
+                        Profesor3 = usersList.Count > 2 ? new ProfesorModel { Email = usersList[2].Email } : new ProfesorModel()
                     };
 
                     ListaDePropuestas.Add(propuestaModel);
@@ -81,7 +81,7 @@ namespace WPF_CHEAT_os.ViewModel
                 {
                     if (profesor.Rol.Equals(Constants.ROLE_REGISTRER_PROFESOR))
                     {
-                        Profesores.Add(new ProfesorModel { Nombre = profesor.Name });
+                        Profesores.Add(new ProfesorModel { Email = profesor.Email });
                     }
                 }
             }
