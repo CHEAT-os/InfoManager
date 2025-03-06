@@ -31,17 +31,21 @@ namespace WPF_CHEAT_os.ViewModel
         private PropuestaModel? selectedPropuesta;
 
         private readonly VerPropuestaViewModel _viewModel;
+        private readonly IAsignarTribunalProvider _asignarTribunalProvider;
 
         [ObservableProperty]
         private ViewModelBase? selectedViewModel;
 
         public PropuestaViewModel(IPropuestaProvider propuestaProvider, IServiceProvider serviceProvider,
-                                    IUsuarioProvider usuarioProvider, IAsignarProvider asignarProvider, VerPropuestaViewModel viewModel)
+                                    IUsuarioProvider usuarioProvider, IAsignarProvider asignarProvider, 
+                                    IAsignarTribunalProvider asignarTribunalProvider,
+                                    VerPropuestaViewModel viewModel)
         {
             _propuestaProvider = propuestaProvider;
             _serviceProvider = serviceProvider;
             _usuarioService = usuarioProvider;
             _asignarProvider = asignarProvider;
+            _asignarTribunalProvider = asignarTribunalProvider;
             _viewModel = viewModel;
         }
 
@@ -92,7 +96,7 @@ namespace WPF_CHEAT_os.ViewModel
         {
             if (SelectedPropuesta == null) return;
 
-            var propuestaService = new PropuestaService(new HttpsJsonClientService<PropuestaDTO>());
+            var propuestaService = new PropuestaService(new HttpsJsonClientService<PropuestaDTO>(), _asignarTribunalProvider);
             var usuarioService = new UsuarioService(new HttpsJsonClientService<UsuarioDTO>(), new HttpsJsonClientService<GetUsuarioDTO>());
 
             var viewModel = new VerPropuestaViewModel(propuestaService, usuarioService);

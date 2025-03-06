@@ -235,11 +235,39 @@ namespace WPF_CHEAT_os.Services
                     }
                 }
             }
+
             catch (Exception ex)
             {
                 Console.WriteLine($"Error en la solicitud PATCH: {ex.Message}");
             }
             return default;
+        }
+        public async Task<bool> DeleteAsync(string path, int id)
+        {
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {loginDTO.Token}");
+
+                    HttpResponseMessage response = await httpClient.DeleteAsync($"{Constants.BASE_URL}{path}{id}");
+                    Console.WriteLine($"Intentando eliminar: {Constants.BASE_URL}{path}/{id}");
+
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        await Authenticate(path, httpClient, response);
+                        response = await httpClient.DeleteAsync($"{Constants.BASE_URL}{path}/{id}");
+                    }
+
+                    return response.IsSuccessStatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en la solicitud DELETE: {ex.Message}");
+            }
+            return false;
         }
     }
 }

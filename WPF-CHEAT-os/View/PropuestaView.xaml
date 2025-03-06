@@ -45,7 +45,11 @@
                 <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="200" />
                 <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
 
-                <DataGridTemplateColumn Header="Profesor 1" Width="150">
+                <DataGridTextColumn Header="Profesor1" Binding="{Binding Profesor1.Nombre}" Width="100"/>
+                <DataGridTextColumn Header="Profesor2" Binding="{Binding Profesor2.Nombre}" Width="100"/>
+                <DataGridTextColumn Header="Profesor3" Binding="{Binding Profesor3.Nombre}" Width="100"/>
+
+                <!--<DataGridTemplateColumn Header="Profesor 1" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Profesor1.Nombre}" />
@@ -67,7 +71,7 @@
                             <TextBlock Text="{Binding Profesor3.Nombre}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
             </DataGrid.Columns>
 
         </DataGrid>
