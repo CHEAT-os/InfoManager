@@ -1,0 +1,51 @@
+.propuesta-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 1rem;
+    border: 1px solid #ddd;
+    padding: 1rem;
+  }
+  
+  .propuesta-header {
+    font-weight: bold;
+    display: contents; /* Esto hace que los títulos actúen como celdas de la tabla */
+  }
+  
+  .propuesta-header span {
+    padding: 0.5rem;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .propuesta-row {
+    display: contents; /* Igualmente, las filas se comportan como celdas de la tabla */
+  }
+  
+  .propuesta-row span {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .enviada {
+    color: #fff;
+    background-color: blue;
+  }
+  
+  .aceptada {
+    color: #fff;
+    background-color: green;
+  }
+  
+  .rechazada {
+    color: #fff;
+    background-color: red;
+  }
+  
+  .informacion-adicional {
+    color: black;
+    background-color: yellow;
+    
+  }
+  
