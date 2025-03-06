@@ -51,5 +51,18 @@ namespace WPF_CHEAT_os.Services
                 Console.WriteLine(ex.Message);
             }
         }
+
+        public async Task DeleteAsync(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id)) return;
+                await _httpsJsonClientProvider.DeleteAsync(Constants.PROPUESTA_PATH, id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

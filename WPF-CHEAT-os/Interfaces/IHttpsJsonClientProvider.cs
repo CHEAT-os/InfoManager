@@ -12,5 +12,6 @@ namespace WPF_CHEAT_os.Interfaces
         Task Authenticate(string path, HttpClient httpClient, HttpResponseMessage request);
         Task<T?> LoginPostAsync(string path, LoginDTO data);
         Task<T?> RegisterPostAsync(string path, RegistroDTO data);
+        Task<bool> DeleteAsync(string path, string id);
     }
 }

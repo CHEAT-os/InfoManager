@@ -21,13 +21,8 @@
   <p>La vista no está habilitada en este momento. Solo está disponible entre {{ fechaInicio | date }} y {{ fechaFin | date }}.</p>
 </div>
 
-<!-- Mostrar mensaje si el usuario ya ha enviado una propuesta -->
-<div *ngIf="isProposalSent && !isProposalRequiereAmpliacion" style="color: red;">
-  <p>Ya has enviado una propuesta. No puedes enviar más propuestas.</p>
-</div>
-
-<!-- Formulario solo visible si está habilitado y el estado es "Requiere Ampliación" -->
-<div *ngIf="isProposalRequiereAmpliacion && isViewEnabled">
+<!-- Formulario solo visible si está habilitado -->
+<div *ngIf="isViewEnabled">
   <form [formGroup]="applyForm" (ngSubmit)="submitApplication()"> 
     <label for="nombre">Nombre y apellidos del Alumno:</label> 
     <input type="text" id="nombre" name="nombre" placeholder="Apellidos, Nombre" formControlName="NombreAlumno" required>
