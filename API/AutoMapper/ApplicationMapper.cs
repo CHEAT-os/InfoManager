@@ -2,6 +2,7 @@
 using API.Models.DTOs.Asignatura;
 using API.Models.DTOs.Curso;
 using API.Models.DTOs.Propuesta;
+using API.Models.DTOs.UserDto;
 using API.Models.DTOs.UserDTO;
 using API.Models.Entity;
 using AutoMapper;
@@ -22,6 +23,9 @@ namespace API.AutoMapper
             CreateMap<CreateCursoDTO, CursoEntity>().ReverseMap();
             CreateMap<AsignaturaEntity, AsignaturaDTO>().ReverseMap();
             CreateMap<CreateAsignaturaDTO, AsignaturaEntity>().ReverseMap();
+            CreateMap<User, UserIntDTO>().ReverseMap();
+           
+
         }
     }
 }

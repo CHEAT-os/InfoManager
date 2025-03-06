@@ -137,12 +137,30 @@ namespace API.Repository
                     await _userManager.AddToRoleAsync(user, "alumno");
                     break;
             }
-           
-            AppUser? newUser = _context.AppUsers.FirstOrDefault(u => u.Email == userRegistrationDTO.Email);
 
+            //AppUser? newUser = _context.AppUsers.FirstOrDefault(u => u.Email == userRegistrationDTO.Email);
+
+            //return new UserLoginResponseDTO
+            //{
+            //    User = newUser
+            //};
+            var newUser = new User
+            {
+                Name = userRegistrationDTO.Name,
+                Apellidos = userRegistrationDTO.Apellidos, // Asumiendo que Apellidos está en UserRegistrationDTO
+                Email = userRegistrationDTO.Email,
+                Password = userRegistrationDTO.Password, // Nota: Considera no almacenar la contraseña aquí si ya está en AspNetUsers
+                Rol = userRegistrationDTO.Rol,
+                AspNetUserId = user.Id // Asignar la clave foránea
+            };
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            // Retornar la respuesta
             return new UserLoginResponseDTO
             {
-                User = newUser
+                User = user
             };
         }
     }

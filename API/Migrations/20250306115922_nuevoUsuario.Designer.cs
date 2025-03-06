@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250302163847_initial")]
-    partial class initial
+    [Migration("20250306115922_nuevoUsuario")]
+    partial class nuevoUsuario
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -183,6 +183,10 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AspNetUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -200,6 +204,9 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AspNetUserId")
+                        .IsUnique();
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -394,6 +401,17 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.Navigation("Curso");
+                });
+
+            modelBuilder.Entity("API.Models.Entity.User", b =>
+                {
+                    b.HasOne("API.Models.Entity.AppUser", "AspNetUser")
+                        .WithOne()
+                        .HasForeignKey("API.Models.Entity.User", "AspNetUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AspNetUser");
                 });
 
             modelBuilder.Entity("AsignaturaEntityUser", b =>
