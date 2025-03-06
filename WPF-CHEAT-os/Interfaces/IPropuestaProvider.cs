@@ -13,5 +13,6 @@ namespace WPF_CHEAT_os.Interfaces
         Task<PropuestaDTO> GetByIdAsync(string id);
         Task AddAsync(PropuestaDTO propuesta);
         Task UpdateAsync(PropuestaDTO propuesta);
+        Task DeleteAsync(string id);
     }
 }

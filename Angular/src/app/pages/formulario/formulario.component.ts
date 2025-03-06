@@ -4,7 +4,7 @@ import { PropuestaService } from 'src/app/service/propuesta.service';
 import { PropuestaModel } from '../../models/propuestaModel';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
-import { AuthService } from 'src/app/service/auth.service';
+import { AuthService } from 'src/app/service/auth.service'; 
 
 @Component({
   selector: 'app-formulario',
@@ -36,7 +36,8 @@ export class FormularioComponent implements OnInit {
 
   ngOnInit() {
     this.userEmail = this.authService.getUserEmail() || ''; // Obtener el email del usuario
-    // Verificamos si la vista está habilitada solo por el tiempo
+
+    // Verificamos si la vista está habilitada
     this.checkVistaHabilitada();
   }
 
@@ -44,16 +45,14 @@ export class FormularioComponent implements OnInit {
   checkVistaHabilitada(): void {
     const currentDate = new Date();
     if (currentDate < this.fechaInicio || currentDate > this.fechaFin) {
-      this.isViewEnabled = false; // Si la fecha actual está fuera del rango, deshabilitamos la vista
-    } else {
-      this.isViewEnabled = true; // Si está dentro del rango, habilitamos la vista
+      this.isViewEnabled = false;
     }
   }
 
   // Método para enviar la propuesta
   async submitApplication() {
     this.formSubmitted = true;
-
+    
     if (this.applyForm.invalid) {
       console.log('Formulario inválido');
       Object.keys(this.applyForm.controls).forEach(field => {
@@ -65,7 +64,7 @@ export class FormularioComponent implements OnInit {
     }
 
     const propuestaData: PropuestaModel = {
-      email: this.userEmail,
+      email: this.userEmail, 
       titulo: this.applyForm.value.NombreProyecto ?? '',
       descripcion: this.applyForm.value.descripcion ?? '',
       tipo: this.applyForm.value.tipoProyecto ?? '',
@@ -76,7 +75,7 @@ export class FormularioComponent implements OnInit {
       const response = await this.propuestaService.postPropuesta(propuestaData);
       console.log('Propuesta enviada:', response);
       this.applyForm.reset();
-      this.formSubmitted = false;
+      this.formSubmitted = false; 
 
       this.successMessage = 'Propuesta enviada con éxito';
       this.errorMessage = '';
