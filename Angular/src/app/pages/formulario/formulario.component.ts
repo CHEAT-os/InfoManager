@@ -4,7 +4,7 @@ import { PropuestaService } from 'src/app/service/propuesta.service';
 import { PropuestaModel } from '../../models/propuestaModel';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
-import { AuthService } from 'src/app/service/auth.service'; 
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-formulario',
@@ -26,8 +26,6 @@ export class FormularioComponent implements OnInit {
   errorMessage: string = '';
   userEmail: string = '';
   isViewEnabled: boolean = true; // Variable para controlar la habilitación de la vista
-  isProposalSent: boolean = false; // Para verificar si ya se ha enviado una propuesta
-  isProposalRequiereAmpliacion: boolean = false; // Para verificar si el estado es "Requiere Ampliación"
   fechaInicio: Date = new Date('2025-03-01'); // Fecha de inicio
   fechaFin: Date = new Date('2025-03-31');  // Fecha de fin
 
@@ -38,40 +36,24 @@ export class FormularioComponent implements OnInit {
 
   ngOnInit() {
     this.userEmail = this.authService.getUserEmail() || ''; // Obtener el email del usuario
-
-    // Verificamos si la vista está habilitada
+    // Verificamos si la vista está habilitada solo por el tiempo
     this.checkVistaHabilitada();
-
-    // Verificamos el estado de la propuesta
-    this.checkEstadoPropuesta();
   }
 
   // Verificar si la vista está habilitada según las fechas
   checkVistaHabilitada(): void {
     const currentDate = new Date();
     if (currentDate < this.fechaInicio || currentDate > this.fechaFin) {
-      this.isViewEnabled = false;
+      this.isViewEnabled = false; // Si la fecha actual está fuera del rango, deshabilitamos la vista
+    } else {
+      this.isViewEnabled = true; // Si está dentro del rango, habilitamos la vista
     }
-  }
-
-  // Verificar el estado de las propuestas del usuario
-  checkEstadoPropuesta(): void {
-    this.propuestaService.getPropuestasPorEmail().then(propuestas => {
-      // Contamos las propuestas con el estado "Requiere Ampliación"
-      const propuesta = propuestas.find(p => p.email === this.userEmail && p.estado === 'Requiere Ampliacion');
-      
-      if (propuesta) {
-        this.isProposalRequiereAmpliacion = true; // Si encontramos una propuesta con estado "Requiere Ampliación"
-      } else {
-        this.isProposalSent = true; // Si la propuesta ya existe con otro estado, deshabilitamos el formulario
-      }
-    });
   }
 
   // Método para enviar la propuesta
   async submitApplication() {
     this.formSubmitted = true;
-    
+
     if (this.applyForm.invalid) {
       console.log('Formulario inválido');
       Object.keys(this.applyForm.controls).forEach(field => {
@@ -83,7 +65,7 @@ export class FormularioComponent implements OnInit {
     }
 
     const propuestaData: PropuestaModel = {
-      email: this.userEmail, 
+      email: this.userEmail,
       titulo: this.applyForm.value.NombreProyecto ?? '',
       descripcion: this.applyForm.value.descripcion ?? '',
       tipo: this.applyForm.value.tipoProyecto ?? '',
@@ -94,7 +76,7 @@ export class FormularioComponent implements OnInit {
       const response = await this.propuestaService.postPropuesta(propuestaData);
       console.log('Propuesta enviada:', response);
       this.applyForm.reset();
-      this.formSubmitted = false; 
+      this.formSubmitted = false;
 
       this.successMessage = 'Propuesta enviada con éxito';
       this.errorMessage = '';
