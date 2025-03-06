@@ -97,7 +97,7 @@ namespace API.Controllers
         /// Asigna un usuario a una propuesta (Many-to-Many)
         /// </summary>
         [HttpPost("asignarUsuario")]
-        public async Task<IActionResult> AsignarUsuarioAPropuesta([FromBody] AsignarPropuestaDTO request)
+        public async Task<IActionResult> AsignarProfesorAPropuesta([FromBody] AsignarPropuestaDTO request)
         {
             var user = await _context.Users.Include(u => u.Propuestas)
                 .FirstOrDefaultAsync(u => u.Id == request.UserId);

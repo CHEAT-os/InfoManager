@@ -60,7 +60,7 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(Roles = "admin,profesor")]
+        [Authorize(Roles = "admin,profesor,alumno")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

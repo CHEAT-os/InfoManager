@@ -46,6 +46,7 @@ public partial class App : Application
         services.AddSingleton<IPropuestaProvider, PropuestaService>();
         services.AddSingleton<IUsuarioProvider, UsuarioService>();
         services.AddSingleton<IAsignarProvider, AsignarService>();
+        services.AddSingleton<IAsignarTribunalProvider, AsignarTribunalService>();
         services.AddSingleton(typeof(IHttpsJsonClientProvider<>), typeof(HttpsJsonClientService<>));
 
         return services.BuildServiceProvider();
