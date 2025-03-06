@@ -44,6 +44,7 @@ namespace API.Repository
                 {
                     Id = user.Id,
                     Name = user.Name,
+                    Apellidos = user.Apellidos, 
                     Email = user.Email,
                     Rol = roles.FirstOrDefault()
                 });
@@ -51,6 +52,7 @@ namespace API.Repository
 
             return userDtos;
         }
+
 
         public bool IsUniqueUser(string email)
         {
@@ -109,6 +111,7 @@ namespace API.Repository
                 Name = userRegistrationDTO.Name,
                 Email = userRegistrationDTO.Email,
                 NormalizedEmail = userRegistrationDTO.Email.ToUpper(),
+                Apellidos = userRegistrationDTO.Apellidos 
             };
 
             var result = await _userManager.CreateAsync(user, userRegistrationDTO.Password);

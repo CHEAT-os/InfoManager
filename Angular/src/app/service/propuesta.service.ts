@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PropuestaModel } from '../models/propuestaModel';
+import { PropuestaGetModel } from '../models/propuestaGetModel';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import { PropuestaModel } from '../models/propuestaModel';
 export class PropuestaService {
 
   readonly baseUrl = 'https://localhost:7000/api/Propuesta/enviar';
+  readonly baseUrl_get = 'https://localhost:7000/api/Propuesta';
 
   constructor() { }
 
@@ -40,7 +42,26 @@ export class PropuestaService {
     }
   }
 
-  async getPropuestaById(id: number): Promise<PropuestaModel | undefined> {
+  async updatePropuesta(propuesta: PropuestaGetModel): Promise<PropuestaGetModel> {
+    try {
+      const response = await fetch(`${this.baseUrl_get}/${propuesta.id}`, {
+        method: 'PUT',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify(propuesta)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error al actualizar propuesta:', error);
+      throw error; 
+    }
+  }
+
+  async getPropuestaById(id: number): Promise<PropuestaGetModel | undefined> {
     try {
       const response = await fetch(`${this.baseUrl}/${id}`, {
         method: 'GET',
@@ -58,9 +79,31 @@ export class PropuestaService {
     }
   }
 
-  async getPropuestasUsuario(userId: number): Promise<PropuestaModel[]> {
+  async getPropuestas(): Promise<PropuestaGetModel[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/usuario/${userId}`, {
+      const response = await fetch(`${this.baseUrl_get}`, {
+        method: 'GET',
+        headers: this.getAuthHeaders()
+      });
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error al obtener todas las propuestas:', error);
+      return [];
+    }
+  }
+
+  // Método para obtener las propuestas del usuario logueado, comparando el email
+  async getPropuestasPorEmail(): Promise<PropuestaModel[]> {
+    try {
+      const userEmail = localStorage.getItem('userEmail');
+      if (!userEmail) {
+        throw new Error('No se encontró el email del usuario en localStorage.');
+      }
+
+      const response = await fetch(`${this.baseUrl_get}/usuario/email/${userEmail}`, {
         method: 'GET',
         headers: this.getAuthHeaders()
       });
@@ -71,7 +114,7 @@ export class PropuestaService {
 
       return await response.json();
     } catch (error) {
-      console.error(`Error al obtener propuestas del usuario ${userId}:`, error);
+      console.error('Error al obtener las propuestas por email:', error);
       return [];
     }
   }

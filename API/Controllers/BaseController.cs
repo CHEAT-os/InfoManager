@@ -83,7 +83,7 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(Roles = "admin,profesor")]
+        [Authorize(Roles = "admin,profesor,alumno")]
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

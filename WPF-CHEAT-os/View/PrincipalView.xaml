@@ -14,7 +14,11 @@
 
     <Grid>
         <Grid x:Name="MainContent" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Bienvenido, Profesor" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Text="Bienvenido al Gestor de TFG" FontSize="24" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,30"/>
+
+            <TextBlock Text="Administra tus trabajos de fin de grado de manera sencilla y eficiente." FontSize="24" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0"/>
         </Grid>
     </Grid>
 </UserControl>

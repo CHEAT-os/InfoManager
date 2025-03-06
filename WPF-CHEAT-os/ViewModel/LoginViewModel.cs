@@ -20,6 +20,9 @@ namespace WPF_CHEAT_os.ViewModel
         public LoginViewModel(IHttpsJsonClientProvider<UserDTO> httpJsonProvider)
         {
             _httpJsonProvider = httpJsonProvider;
+
+            Email = "profe@gmail.com";
+            Password = "@Alumn0123";
         }
 
         [RelayCommand]
