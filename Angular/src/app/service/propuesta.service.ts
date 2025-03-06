@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PropuestaModel } from '../models/propuestaModel';
+import { PropuestaGetModel } from '../models/propuestaGetModel';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,26 @@ export class PropuestaService {
     }
   }
 
-  async getPropuestaById(id: number): Promise<PropuestaModel | undefined> {
+  async updatePropuesta(propuesta: PropuestaGetModel): Promise<PropuestaGetModel> {
+    try {
+      const response = await fetch(`${this.baseUrl_get}/${propuesta.id}`, {
+        method: 'PUT',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify(propuesta)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error al actualizar propuesta:', error);
+      throw error; 
+    }
+  }
+
+  async getPropuestaById(id: number): Promise<PropuestaGetModel | undefined> {
     try {
       const response = await fetch(`${this.baseUrl}/${id}`, {
         method: 'GET',
@@ -59,7 +79,7 @@ export class PropuestaService {
     }
   }
 
-  async getPropuestas(): Promise<PropuestaModel[]> {
+  async getPropuestas(): Promise<PropuestaGetModel[]> {
     try {
       const response = await fetch(`${this.baseUrl_get}`, {
         method: 'GET',
