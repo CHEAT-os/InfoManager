@@ -18,5 +18,10 @@ namespace API.Models.Entity
         public ICollection<PropuestaEntity> Propuestas { get; } = [];
         public ICollection<CursoEntity> Cursos { get; } = [];
         public ICollection<AsignaturaEntity> Asignaturas { get; } = [];
+
+
+        public string AspNetUserId { get; set; }
+        public AppUser AspNetUser { get; set; }
+
     }
 }

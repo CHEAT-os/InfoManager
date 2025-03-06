@@ -6,18 +6,17 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace API.Repository
 {
-    public class PropuestaRepository : IPropuestaRepository
+    public class UserPracticoRepository : IUserPracticoRepository
     {
         private readonly ApplicationDbContext _context;
         private readonly IMemoryCache _cache;
-        private readonly string PropuestaCacheKey = "PropuestaCacheKey";
+        private readonly string UsersCacheKey = "UsersCacheKey";
         private readonly int CacheExpirationTime = 3600;
-        public PropuestaRepository(ApplicationDbContext context, IMemoryCache cache)
+        public UserPracticoRepository(ApplicationDbContext context, IMemoryCache cache)
         {
             _context = context;
             _cache = cache;
         }
-
         public async Task<bool> Save()
         {
             var result = await _context.SaveChangesAsync() >= 0;
@@ -27,52 +26,51 @@ namespace API.Repository
             }
             return result;
         }
-
         public void ClearCache()
         {
-            _cache.Remove(PropuestaCacheKey);
+            _cache.Remove(UsersCacheKey);
         }
 
-        public async Task<ICollection<PropuestaEntity>> GetAllAsync()
+        public async Task<ICollection<User>> GetAllAsync()
         {
-            if (_cache.TryGetValue(PropuestaCacheKey, out ICollection<PropuestaEntity> propuestasCached))
+            if (_cache.TryGetValue(UsersCacheKey, out ICollection<User> propuestasCached))
                 return propuestasCached;
 
-            var propuestasFromDb = await _context.Propuesta.OrderBy(c => c.Titulo).ToListAsync();
+            var propuestasFromDb = await _context.Users.OrderBy(c => c.Name).ToListAsync();
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                   .SetAbsoluteExpiration(TimeSpan.FromSeconds(CacheExpirationTime));
 
-            _cache.Set(PropuestaCacheKey, propuestasFromDb, cacheEntryOptions);
+            _cache.Set(UsersCacheKey, propuestasFromDb, cacheEntryOptions);
             return propuestasFromDb;
         }
 
-        public async Task<PropuestaEntity> GetAsync(int id)
+        public async Task<User> GetAsync(int id)
         {
-            if (_cache.TryGetValue(PropuestaCacheKey, out ICollection<PropuestaEntity> propuestasCached))
+            if (_cache.TryGetValue(UsersCacheKey, out ICollection<User> propuestasCached))
             {
                 var propuesta = propuestasCached.FirstOrDefault(c => c.Id == id);
                 if (propuesta != null)
                     return propuesta;
             }
 
-            return await _context.Propuesta.FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Users.FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Propuesta.AnyAsync(c => c.Id == id);
+            return await _context.Users.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<bool> CreateAsync(PropuestaEntity propuesta)
+        public async Task<bool> CreateAsync(User propuesta)
         {
-            _context.Propuesta.Add(propuesta);
-           
+            _context.Users.Add(propuesta);
+
             return await Save();
         }
 
-        public async Task<bool> UpdateAsync(PropuestaEntity propuesta)
+        public async Task<bool> UpdateAsync(User propuesta)
         {
-            
+
             _context.Update(propuesta);
             return await Save();
         }
@@ -83,8 +81,10 @@ namespace API.Repository
             if (propuesta == null)
                 return false;
 
-            _context.Propuesta.Remove(propuesta);
+            _context.Users.Remove(propuesta);
             return await Save();
         }
+
+       
     }
 }

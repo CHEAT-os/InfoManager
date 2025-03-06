@@ -33,6 +33,11 @@ namespace API.Data
                 .WithMany(e => e.Asignaturas)
                 .HasForeignKey(e => e.CursoId);
 
+            modelBuilder.Entity<User>()
+               .HasOne(u => u.AspNetUser)
+               .WithOne()
+               .HasForeignKey<User>(u => u.AspNetUserId);
+
         }
 
         //Add models here
